@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بوابة الطالب | منصتي التعليمية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="dashboard-container">
+
+    <div class="overlay" id="overlay"></div>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3 class="user-name" id="sessionUserName">...</h3>
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li class="active" data-section="courses"><a href="#courses"><i>📚</i> الكورسات المتاحة</a></li>
+          <li data-section="enrolled"><a href="#enrolled"><i>🎓</i> الكورسات المشترك بها</a></li>
+          <li data-section="results"><a href="#results"><i>📊</i> نتائج الامتحانات</a></li>
+          <li data-section="notifications"><a href="#notifications"><i>🔔</i> الإشعارات <span class="nav-badge"
+                id="notifBadge" hidden></span></a></li>
+          <li data-section="profile"><a href="#profile"><i>⚙️</i> الحساب الشخصي</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <div class="main-wrapper">
+
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle Navigation">☰</button>
+          <div class="logo">منصتي <span>التعليمية</span></div>
+        </div>
+        <div class="topbar-right" style="display: flex; align-items: center; gap: 15px;">
+          <!-- نظام المحفظة -->
+          <div class="wallet-pill"
+            style="background: var(--bg-main); border: 1px solid var(--primary); color: var(--text-main); padding: 5px 15px; border-radius: 20px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
+            <span>💳 الرصيد:</span>
+            <span id="walletBalance" style="color: var(--primary);">0</span> ج.م
+            <button class="btn btn-sm btn-primary" style="padding: 2px 10px; font-size: 0.8rem; border-radius: 12px;"
+              onclick="openModal('walletModal')">شحن</button>
+          </div>
+
+          <button class="theme-toggle" id="themeToggle" title="تبديل الوضع">🌙</button>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <div class="toast-container" id="toastContainer"></div>
+
+        <!-- SECTION 1: المواد المتاحة (المتجر) -->
+        <section id="courses" class="app-section active">
+          <div class="section-header">
+            <h2>📚 مواد الفرقة الخاصة بك</h2>
+            <p>تصفح المواد المتاحة واشترِ المحاضرات التي تحتاجها بضغطة زر من رصيد محفظتك.</p>
+          </div>
+
+          <!-- فلتر الترم -->
+          <div style="margin-bottom: 20px; display: flex; gap: 10px;">
+            <select class="form-control" style="max-width: 200px;">
+              <option value="term1">الترم الأول</option>
+              <option value="term2">الترم الثاني</option>
+            </select>
+          </div>
+
+          <div class="courses-grid" id="availableSubjectsGrid">
+            <!-- كارت المادة الأول -->
+            <div class="course-card">
+              <div class="course-badge">د. جمال عبد الناصر</div>
+
+              <!-- صورة الدكتور -->
+              <div class="teacher-avatar"
+                style="width: 80px; height: 80px; margin: 0 auto 15px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary);">
+                <!-- ضع مسار صورة الدكتور الحقيقية هنا -->
+                <img src="https://ui-avatars.com/api/?name=Gamal&background=10b981&color=fff" alt="د. جمال"
+                  style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+
+              <h3>القانون الجنائي</h3>
+              <p style="font-size: 0.9rem; margin-bottom: 15px;">شرح تفصيلي لمنهج القانون الجنائي وتطبيقات عملية.</p>
+
+              <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: bold; color: var(--primary);">
+                <span>12 محاضرة</span>
+              </div>
+
+              <button class="btn btn-primary enter-course-btn" style="width: 100%;">تصفح وشراء المحاضرات</button>
+            </div>
+
+            <!-- كارت المادة الثاني -->
+            <div class="course-card">
+              <div class="course-badge">د. أحمد طه</div>
+
+              <div class="teacher-avatar"
+                style="width: 80px; height: 80px; margin: 0 auto 15px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary);">
+                <img src="https://ui-avatars.com/api/?name=Ahmed&background=10b981&color=fff" alt="د. أحمد"
+                  style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+
+              <h3>القانون الدولي</h3>
+              <p style="font-size: 0.9rem; margin-bottom: 15px;">المنهج الكامل للقانون الدولي مع المراجعات.</p>
+
+              <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: bold; color: var(--primary);">
+                <span>8 محاضرات</span>
+              </div>
+
+              <button class="btn btn-primary enter-course-btn" style="width: 100%;">تصفح وشراء المحاضرات</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 2: الكورسات المشترك بها (Drill-down) -->
+        <section id="enrolled" class="app-section">
+
+          <!-- LEVEL 1: قائمة الكورسات المفعلة -->
+          <div id="level-courses" class="drill-level active">
+            <div class="section-header">
+              <h2>كورساتي المشترك بها</h2>
+              <p>تابع تقدمك في الكورسات المفعّلة وأكمل الدروس والامتحانات.</p>
+            </div>
+            <div class="courses-grid" id="enrolledCoursesList">
+              <p class="empty-state">جاري التحميل...</p>
+            </div>
+          </div>
+
+          <!-- LEVEL 2: تفاصيل الكورس وقائمة الدروس -->
+          <div id="level-lectures" class="drill-level hidden">
+            <div class="course-hero-card">
+              <div class="hero-content">
+                <h2 class="hero-title" id="heroCourseTitle">...</h2>
+                <p class="hero-subtitle" id="heroCourseSubtitle">...</p>
+                <div class="hero-stats">
+                  <div class="stat-box"><span class="stat-num" id="heroLessonsCount">0</span><span
+                      class="stat-label">درس</span></div>
+                  <div class="stat-box"><span class="stat-num" id="heroPassedCount">0</span><span class="stat-label">درس
+                      مُنجز</span></div>
+                  <div class="stat-box"><span class="stat-num" id="heroPercent">0%</span><span
+                      class="stat-label">إنجاز</span></div>
+                </div>
+                <div class="hero-footer">
+                  <span class="meta-tag" id="heroBreadcrumb">...</span>
+                  <button class="btn btn-back-hero" id="backToCoursesBtn">العودة</button>
+                </div>
+              </div>
+            </div>
+            <div class="course-content-box">
+              <h3 class="box-title">محتوى الكورس</h3>
+              <div class="lectures-accordion-list" id="lecturesContainer">
+                <p class="empty-state">جاري تحميل الدروس...</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- LEVEL 3: محتوى الدرس (فيديو + ملفات + امتحان) -->
+          <div id="level-tabs" class="drill-level hidden">
+            <div class="lecture-view-header">
+              <button class="btn-back-link" id="backToLecturesBtn"><span>➔</span> العودة لقائمة الدروس</button>
+              <h2 id="currentLectureTitle" class="current-lecture-head">...</h2>
+            </div>
+            <div class="tabs-nav-container">
+              <div class="tabs-header">
+                <button class="tab-btn active" data-tab="video-tab"><span class="tab-icon">📺</span><span
+                    class="tab-text">فيديو الدرس</span></button>
+                <button class="tab-btn" data-tab="files-tab"><span class="tab-icon">📄</span><span
+                    class="tab-text">ملفات الدرس</span></button>
+                <button class="tab-btn" data-tab="exam-tab"><span class="tab-icon">📝</span><span
+                    class="tab-text">الامتحان</span></button>
+              </div>
+            </div>
+            <div class="tab-content active" id="video-tab">
+              <div id="videoContainer" class="video-card">
+                <p class="empty-state">لا يوجد فيديو لهذا الدرس.</p>
+              </div>
+            </div>
+            <div class="tab-content" id="files-tab">
+              <div class="files-list-card">
+                <div class="files-card-header">
+                  <h3>📂 الملفات المرفقة مع الدرس</h3>
+                  <p>قم بتحميل الملفات للطباعة والمذاكرة.</p>
+                </div>
+                <div class="pdf-files-grid" id="filesContainer"></div>
+              </div>
+            </div>
+            <div class="tab-content" id="exam-tab">
+              <div id="examsContainer"></div>
+            </div>
+          </div>
+
+          <!-- LEVEL 4: واجهة الامتحان -->
+          <div id="level-exam-interface" class="drill-level hidden">
+            <div class="exam-header">
+              <button class="btn-back" id="exitExamBtn">خروج</button>
+              <div class="exam-title" id="examTitle">...</div>
+              <div class="exam-timer" id="examTimer">--:--</div>
+            </div>
+            <div class="exam-layout">
+              <aside class="exam-sidebar">
+                <h4>شبكة الأسئلة</h4>
+                <div class="question-grid" id="questionGridNav"></div>
+                <button class="btn btn-success btn-full" id="submitExamBtn">إنهاء وتسليم الامتحان</button>
+              </aside>
+              <main class="exam-main">
+                <div class="question-card">
+                  <div class="question-number" id="questionNumber">سؤال 1</div>
+                  <h3 class="question-text" id="questionText">...</h3>
+                  <div class="options-group" id="optionsGroup"></div>
+                </div>
+                <div class="exam-actions">
+                  <button class="btn btn-secondary" id="prevQBtn" disabled>السابق</button>
+                  <button class="btn btn-primary" id="nextQBtn">التالي</button>
+                </div>
+              </main>
+            </div>
+          </div>
+
+          <!-- LEVEL 5: نتيجة الامتحان الفورية -->
+          <div id="level-result" class="drill-level hidden">
+            <div class="review-summary-card" id="resultSummaryCard"></div>
+            <div class="card-footer-action">
+              <button class="btn btn-primary" id="backFromResultBtn">العودة إلى محتوى الكورس</button>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- SECTION 3: نتائج الامتحانات -->
+        <section id="results" class="app-section">
+          <div class="exams-header-title">
+            <h2>نتائج الامتحانات</h2>
+            <p>تتبع محاولاتك في الامتحانات وراجع درجاتك تفصيلياً.</p>
+          </div>
+          <div class="exams-stats-grid">
+            <div class="stat-overview-card">
+              <div class="stat-icon-wrapper">📄</div>
+              <div class="stat-info">
+                <span class="stat-value" id="statTotal">0</span>
+                <span class="stat-label">إجمالي المحاولات</span>
+                <span class="stat-sublabel">كل محاولاتك في الامتحانات</span>
+              </div>
+            </div>
+            <div class="stat-overview-card">
+              <div class="stat-icon-wrapper red">⏰</div>
+              <div class="stat-info">
+                <span class="stat-value red" id="statInProgress">0</span>
+                <span class="stat-label">قيد التنفيذ</span>
+                <span class="stat-sublabel">محاولات لم تُسلَّم بعد</span>
+              </div>
+            </div>
+            <div class="stat-overview-card">
+              <div class="stat-icon-wrapper blue">📖</div>
+              <div class="stat-info">
+                <span class="stat-value blue" id="statPending">0</span>
+                <span class="stat-label">بانتظار التقييم</span>
+                <span class="stat-sublabel">سُلّمت ولم تُقيَّم بالكامل</span>
+              </div>
+            </div>
+            <div class="stat-overview-card">
+              <div class="stat-icon-wrapper green">✓</div>
+              <div class="stat-info">
+                <span class="stat-value green" id="statGraded">0</span>
+                <span class="stat-label">مكتملة</span>
+                <span class="stat-sublabel">تم تقييمها بالكامل</span>
+              </div>
+            </div>
+          </div>
+          <div class="exams-cards-container" id="attemptsList">
+            <p class="empty-state">جاري تحميل المحاولات...</p>
+          </div>
+        </section>
+
+        <!-- SECTION 4: الإشعارات -->
+        <section id="notifications" class="app-section">
+          <div class="exams-header-title">
+            <h2>🔔 الإشعارات</h2>
+            <p>كل الأخبار والتحديثات الخاصة بحسابك.</p>
+          </div>
+          <div class="notifications-bar">
+            <span class="unread-count" id="notifUnreadCount">0 غير مقروء</span>
+            <button class="btn btn-outline btn-sm" id="refreshNotifBtn">تحديث</button>
+          </div>
+          <div class="notifications-list" id="notificationsList">
+            <p class="empty-state">جاري تحميل الإشعارات...</p>
+          </div>
+        </section>
+
+        <!-- SECTION 5: الحساب الشخصي -->
+        <section id="profile" class="app-section">
+          <div class="profile-card-container">
+
+            <div class="profile-card-header">
+              <h2>⚙️ الحساب الشخصي</h2>
+              <p>عرض وتحديث بياناتك الشخصية وتغيير كلمة المرور.</p>
+            </div>
+
+            <form class="profile-form" id="profileDataForm">
+              <div class="form-section-block">
+                <h3 class="form-section-title">👤 البيانات الشخصية</h3>
+                <div class="form-grid-2col">
+                  <div class="form-group">
+                    <label for="pfName">الاسم بالكامل</label>
+                    <input type="text" id="pfName" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label for="pfEmail">البريد الإلكتروني</label>
+                    <input type="email" id="pfEmail" class="form-control" dir="ltr">
+                  </div>
+                  <div class="form-group">
+                    <label for="pfPhone">رقم الموبايل (للقراءة)</label>
+                    <input type="tel" id="pfPhone" class="form-control" dir="ltr" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label for="pfStudentNumber">رقم الطالب</label>
+                    <input type="text" id="pfStudentNumber" class="form-control" dir="ltr">
+                  </div>
+                  <div class="form-group">
+                    <label for="pfGuardianName">اسم ولي الأمر</label>
+                    <input type="text" id="pfGuardianName" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label for="pfGuardianPhone">رقم موبايل ولي الأمر</label>
+                    <input type="tel" id="pfGuardianPhone" class="form-control" dir="ltr">
+                  </div>
+                  <div class="form-group">
+                    <label for="pfGovernorate">المحافظة</label>
+                    <select id="pfGovernorate" class="form-control select-dropdown">
+                      <option value="">اختر المحافظة...</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="pfBirthDate">تاريخ الميلاد</label>
+                    <input type="date" id="pfBirthDate" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <p id="profileDataMsg" class="form-msg"></p>
+              <div class="profile-actions-footer">
+                <button type="submit" class="btn btn-primary btn-lg">💾 حفظ التعديلات</button>
+              </div>
+            </form>
+
+            <hr class="divider-line">
+
+            <form class="profile-form" id="profilePasswordForm">
+              <div class="form-section-block">
+                <h3 class="form-section-title">🔒 تغيير كلمة المرور</h3>
+                <div class="form-grid-3col">
+                  <div class="form-group">
+                    <label for="currPass">كلمة المرور الحالية</label>
+                    <input type="password" id="currPass" class="form-control" placeholder="••••••••">
+                  </div>
+                  <div class="form-group">
+                    <label for="newPass">كلمة المرور الجديدة</label>
+                    <input type="password" id="newPass" class="form-control" placeholder="••••••••">
+                  </div>
+                  <div class="form-group">
+                    <label for="confirmPass">تأكيد كلمة المرور الجديدة</label>
+                    <input type="password" id="confirmPass" class="form-control" placeholder="••••••••">
+                  </div>
+                </div>
+              </div>
+              <p id="profilePassMsg" class="form-msg"></p>
+              <div class="profile-actions-footer">
+                <button type="submit" class="btn btn-primary btn-lg">🔑 تغيير كلمة المرور</button>
+              </div>
+            </form>
+
+            <div class="logout-danger-zone">
+              <div class="danger-info">
+                <h4>تسجيل الخروج</h4>
+                <p>سيتم إنهاء جلستك الحالية وسيُطلب منك تسجيل الدخول مجدداً.</p>
+              </div>
+              <button class="btn btn-danger" id="logoutBtn">🚪 تسجيل الخروج</button>
+            </div>
+
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Activation Code Modal -->
+  <div class="modal" id="activationModal">
+    <div class="modal-content">
+      <button class="close-modal-btn" id="closeModalBtn">&times;</button>
+      <h3>أدخل كود التفعيل</h3>
+      <p id="modalCourseName">...</p>
+      <input type="text" id="activationCodeInput" placeholder="كود مكون من 12 رقم" class="modal-input" maxlength="20"
+        dir="ltr">
+      <p id="modalRedeemMsg" class="form-msg"></p>
+      <button class="btn btn-primary btn-full" id="confirmCodeBtn">تأكيد الكود</button>
+    </div>
+  </div>
+  <!-- Modal: شحن المحفظة -->
+  <div class="modal" id="walletModal">
+    <div class="modal-content">
+      <button class="close-modal-btn" onclick="closeModal('walletModal')">&times;</button>
+      <h3 style="margin-bottom: 10px;">💳 شحن رصيد المحفظة</h3>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+        لشحن رصيدك، قم بتحويل المبلغ المطلوب عبر (فودافون كاش) أو (إنستا باي)، ثم أدخل الكود الذي استلمته هنا.
+      </p>
+
+      <div class="form-group">
+        <label>كود الشحن المسبق الدفع:</label>
+        <input type="text" placeholder="مثال: VF-1234-5678" class="form-control" style="margin-bottom: 15px;">
+      </div>
+
+      <button class="btn btn-primary btn-full" type="button" disabled title="قريبا">
+        تأكيد الشحن وتحديث الرصيد
+      </button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>

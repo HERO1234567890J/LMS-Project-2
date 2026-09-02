@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول / إنشاء حساب جديد</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            /* خلفية متدرجة بألوان الهوية (أزرق عميق إلى أخضر زمردي داكن) */
+            background: linear-gradient(135deg, #021a14 30%, #062429 90%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            direction: rtl;
+        }
+
+        /* Navbar */
+        .custom-navbar {
+            width: 100%;
+            background: rgba(3, 20, 16, 0.7);
+            /* أسود فحمي مائل للاخضرار شفاف */
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+            /* خط سفلي أخضر زمردي خفيف */
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: #10b981;
+            /* لون أخضر زمردي أساسي */
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .login-btn {
+            background-color: #10b981;
+            /* أخضر زمردي */
+            color: #ffffff;
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.3s ease;
+            border: none;
+        }
+
+        .login-btn:hover {
+            background-color: #059669;
+            /* أخضر أعمق عند التحويم */
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+            /* ظل أخضر متوهج */
+            transform: translateY(-2px);
+        }
+
+        /* Wrapper */
+        .wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+        }
+
+        .card-container {
+            position: relative;
+            width: 520px;
+            max-width: 100%;
+        }
+
+        /* Toggle Slider */
+        .toggle-wrapper {
+            position: relative;
+            width: 240px;
+            height: 45px;
+            margin: 0 auto 20px;
+            background: rgba(2, 26, 20, 0.7);
+            /* أزرق/أخضر عميق شفاف */
+            border-radius: 25px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            /* إطار أخضر شفاف */
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            padding: 4px;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            height: 100%;
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.6);
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 2;
+            transition: 0.3s ease;
+            border-radius: 20px;
+        }
+
+        .toggle-btn.active {
+            color: #ffffff;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 116px;
+            height: 37px;
+            /* لون الشريط المتحرك (أخضر زمردي متدرج) */
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 20px;
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1;
+        }
+
+        /* Card Content */
+        .card-content {
+            background: #07151a;
+            /* لون البطاقة أسود مائل للاخضرار الداكن */
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            /* إطار أخضر للبطاقة */
+            border-radius: 20px;
+            padding: 35px 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .title {
+            font-size: 26px;
+            font-weight: 800;
+            color: #10b981;
+            /* عنوان أخضر زمردي */
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #e2f1ed;
+            /* رمادي فاتح مائل للاخضرار لراحة العين */
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .flip-card__form {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
+            /* نصوص بيضاء */
+        }
+
+        label .req {
+            color: #10b981;
+            /* النجمة المطلوبة بلون أخضر زمردي */
+            margin-right: 2px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .flip-card__input,
+        .flip-card__select {
+            width: 100%;
+            padding: 11px 14px;
+            /* حقول الإدخال باللون الداكن مع إطار أخضر باهت */
+            background-color: #021a14;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 10px;
+            font-size: 13px;
+            color: #ffffff;
+            /* لون النص المكتوب أبيض */
+            transition: all 0.2s ease;
+            font-family: 'Cairo', sans-serif;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .flip-card__input::placeholder,
+        .flip-card__select::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .flip-card__input:focus,
+        .flip-card__select:focus {
+            outline: none;
+            border-color: #10b981;
+            /* يتوهج للأخضر الزمردي عند التحديد */
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+            background-color: #021a14;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .select-icon {
+            position: absolute;
+            left: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+        }
+
+        .terms-group {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .terms-group input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #10b981;
+            /* علامة الصح باللون الأخضر الزمردي */
+            cursor: pointer;
+        }
+
+        .terms-group label {
+            font-size: 12px;
+            color: #e2f1ed;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .flip-card__btn {
+            margin-top: 10px;
+            padding: 13px;
+            background: #10b981;
+            /* لون الزر الأخضر الأساسي */
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+            width: 100%;
+        }
+
+        .flip-card__btn:hover {
+            background: #059669;
+            /* يتحول للأخضر الأعمق عند الوقوف عليه */
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .message-box {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 13px;
+            min-height: 18px;
+            color: #10b981;
+        }
+
+        @media (max-width: 576px) {
+            .form-row {
+                flex-direction: column;
+                gap: 14px;
+            }
+        }
+
+        .forgot-password {
+            text-align: left;
+            margin-top: 6px;
+            margin-bottom: 15px;
+        }
+
+        .forgot-password a {
+            color: #10b981;
+            /* رابط بلون الهوية الأخضر */
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .forgot-password a:hover {
+            color: #059669;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="custom-navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">HA</a>
+            <a href="index.html" class="login-btn">الرئيسية</a>
+        </div>
+    </nav>
+
+    <div class="wrapper">
+        <div class="card-container">
+
+            <!-- Toggle Buttons -->
+            <div class="toggle-wrapper">
+                <button class="toggle-btn active" id="loginTabBtn" onclick="switchTab('login')">تسجيل الدخول</button>
+                <button class="toggle-btn" id="registerTabBtn" onclick="switchTab('register')">حساب جديد</button>
+                <div class="toggle-slider" id="toggleSlider"></div>
+            </div>
+
+            <!-- بداية الحاوية البيضاء الرئيسية للمحتوى -->
+            <div class="card-content">
+
+                <!-- Login Form -->
+                <div class="form-section active" id="loginSection">
+                    <div class="title">تسجيل الدخول</div>
+                    <div class="subtitle">أهلاً بك مجدداً، يُرجى إدخال بياناتك للمتابعة</div>
+
+                    <form id="loginForm" class="flip-card__form">
+                        <div class="form-group">
+                            <label>رقم الهاتف <span class="req">*</span></label>
+                            <input class="flip-card__input" name="phone" placeholder="01xxxxxxxxx" type="tel" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>كلمة المرور <span class="req">*</span></label>
+                            <div class="input-wrapper">
+                                <input class="flip-card__input" name="password" id="loginPassword"
+                                    placeholder="أدخل كلمة المرور" type="password" required>
+                                <span class="input-icon" onclick="togglePassword('loginPassword')">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="forgot-password">
+                            <a href="forgot-password.html">نسيت كلمة السر؟</a>
+                        </div>
+
+                        <!-- 1. إضافـة زر تسجيل الدخول المفقود -->
+                        <button class="flip-card__btn" type="submit">تسجيل الدخول</button>
+                    </form>
+                    <div id="loginMessage" class="message-box"></div>
+                </div>
+
+                <!-- Register Form -->
+                <div class="form-section" id="registerSection">
+                    <div class="title">إنشاء حساب جديد</div>
+                    <div class="subtitle">أنشئ حسابك للبدء في رحلة التعلم</div>
+
+                    <form id="registerForm" class="flip-card__form">
+                        <div class="form-group">
+                            <label>الاسم الكامل <span class="req">*</span></label>
+                            <input class="flip-card__input" name="name" placeholder="أدخل اسمك الكامل" type="text"
+                                required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>رقم الهاتف <span class="req">*</span></label>
+                                <input class="flip-card__input" name="phone" placeholder="01xxxxxxxxx" type="tel"
+                                    required>
+                            </div>
+
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>كلمة المرور <span class="req">*</span></label>
+                                <div class="input-wrapper">
+                                    <input class="flip-card__input" name="password" id="regPassword"
+                                        placeholder="كلمة مرور قوية" type="password" required>
+                                    <span class="input-icon" onclick="togglePassword('regPassword')">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>تأكيد كلمة المرور <span class="req">*</span></label>
+                                <div class="input-wrapper">
+                                    <input class="flip-card__input" name="password_confirmation" id="regPasswordConfirm"
+                                        placeholder="أعد كتابة كلمة المرور" type="password" required>
+                                    <span class="input-icon" onclick="togglePassword('regPasswordConfirm')">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>المحافظة <span class="req">*</span></label>
+                            <div class="input-wrapper">
+                                <select class="flip-card__select" name="governorate" required>
+                                    <option value="" disabled selected>اختر الفرقه</option>
+                                    <option value="الاولى">الفرقه الاولى</option>
+                                    <option value="الثانيه"> الفرقه الثانى</option>
+                                    <option value="الثالثه">الفرقه الثالثه</option>
+                                    <option value="الرابعه">الفرقه الرابعه </option>
+                                </select>
+                                <span class="select-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+
+
+
+                        <div class="terms-group">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <label for="terms">أوافق على شروط الخدمة</label>
+                        </div>
+
+                        <button class="flip-card__btn" type="submit">إنشاء حساب جديد</button>
+                    </form>
+                    <div id="registerMessage" class="message-box"></div>
+                </div>
+
+            </div> <!-- 2. إغلاق card-content الصحيح هنا ليشمل النماذج كاملة -->
+        </div>
+    </div>
+    <script>
+        const API_URL = "/api/auth";
+
+        function switchTab(tab) {
+            const loginBtn = document.getElementById("loginTabBtn");
+            const registerBtn = document.getElementById("registerTabBtn");
+            const slider = document.getElementById("toggleSlider");
+            const loginSec = document.getElementById("loginSection");
+            const regSec = document.getElementById("registerSection");
+
+            if (tab === 'login') {
+                loginBtn.classList.add("active");
+                registerBtn.classList.remove("active");
+                slider.style.transform = "translateX(0)";
+                loginSec.classList.add("active");
+                regSec.classList.remove("active");
+            } else {
+                registerBtn.classList.add("active");
+                loginBtn.classList.remove("active");
+                slider.style.transform = "translateX(-116px)";
+                regSec.classList.add("active");
+                loginSec.classList.remove("active");
+            }
+        }
+
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            input.type = input.type === "password" ? "text" : "password";
+        }
+
+        /* LOGIN */
+        document.getElementById("loginForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const payload = {
+                phone: formData.get("phone"),
+                password: formData.get("password")
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/login`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.message || "فشل تسجيل الدخول، يرجى التأكد من البيانات");
+
+                document.getElementById("loginMessage").style.color = "#10b981";
+                document.getElementById("loginMessage").innerText = "تم تسجيل الدخول بنجاح! جاري التوجيه...";
+
+                setTimeout(() => {
+                    if (data.role === "Admin") window.location.href = "admin.html";
+                    else window.location.href = "client.html";
+                }, 1000);
+            } catch (error) {
+                document.getElementById("loginMessage").style.color = "#ef4444";
+                document.getElementById("loginMessage").innerText = error.message;
+            }
+        });
+
+        /* REGISTER */
+        document.getElementById("registerForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const payload = {
+                name: formData.get("name"),
+                phone: formData.get("phone"),
+                parent_phone: formData.get("parent_phone"),
+                password: formData.get("password"),
+                password_confirmation: formData.get("password_confirmation"),
+                birthdate: formData.get("birthdate"),
+                address: formData.get("address"),
+                governorate: formData.get("governorate"),
+                grade: formData.get("governorate"),
+                division: formData.get("division")
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/register`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+                if (!response.ok) {
+                    let msg = data.message || "حدث خطأ أثناء إنشاء الحساب";
+                    if (data.errors) msg = Object.values(data.errors).flat().join("\n");
+                    throw new Error(msg);
+                }
+
+                document.getElementById("registerMessage").style.color = "#10b981";
+                document.getElementById("registerMessage").innerText = "تم إنشاء الحساب بنجاح! جاري التوجيه...";
+
+                setTimeout(() => { window.location.href = "client.html"; }, 1000);
+            } catch (error) {
+                document.getElementById("registerMessage").style.color = "#ef4444";
+                document.getElementById("registerMessage").innerText = error.message;
+            }
+        });
+    </script>
+
+</body>
+
+</html>

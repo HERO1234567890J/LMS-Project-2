@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.env
+.env.local
+*.log
+coverage/
+uploads/
+
+# Build artifacts
+*.tsbuildinfo
+prisma/seed.js
+prisma/seed.js.map
+prisma/seed.d.ts
