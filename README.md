@@ -1,156 +1,99 @@
-# LMS v2 — Learning Management System
+# Law LMS
 
-A production-grade Arabic-first Learning Management System with role-based
-portals for **students**, **instructors**, and **administrators**. Built on
-a modern TypeScript stack end-to-end:
+نظام إدارة تعلم عربي لطلاب كلية الحقوق، يحتوي على بوابة للطالب ولوحة إدارة للمسؤول.
 
-| Tier       | Stack                                                                                 |
-| ---------- | ------------------------------------------------------------------------------------- |
-| Backend    | NestJS 10 · Prisma 5 · PostgreSQL 16 · Argon2id · JWT (rotating refresh) · Swagger     |
-| Frontend   | React 18 · Vite 5 · TypeScript 5 (strict) · Tailwind CSS 3 (RTL) · TanStack Query 5  |
-| Database   | PostgreSQL 16 (numeric money, append-only ledger, pessimistic row locks)              |
-| Infra      | Docker Compose (local Postgres), Nginx reverse proxy (production)                     |
+## التقنيات
 
-> The platform supports per-lecture purchases, atomic wallet transactions,
-> subscription activation codes, exam attempts with essay auto-grading
-> deferred to teachers, and an admin review queue for manual wallet
-> top-ups — all wired through the same financial-correctness guarantees
-> described in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+| الجزء | التقنية |
+|---|---|
+| Backend | Node.js 20+ وExpress 4 |
+| Database | PostgreSQL عبر مكتبة `pg` وSQL مباشر بدون ORM |
+| Authentication | `express-session` مع تخزين الجلسات عبر `connect-pg-simple` |
+| Passwords | `bcryptjs` |
+| Frontend | HTML وCSS وJavaScript بدون React أو Vite أو build step |
+| Uploads | `multer`، مع تخزين محلي اختياري أو Bunny Stream للفيديو |
+| Security | `helmet` و`express-rate-limit` والتحقق من محتوى الملفات |
 
----
+لا يستخدم المشروع NestJS أو Prisma أو JWT أو SQLite أو Docker Compose.
 
-## Repository layout
+## هيكل المشروع
 
-```
+```text
 .
-├── backend/            # NestJS API (port 3000)
-│   ├── prisma/         # schema.prisma + migrations + seed.ts
+├── backend/
 │   ├── src/
-│   │   ├── main.ts                 # bootstrap (helmet, CORS, Swagger, validation)
-│   │   ├── app.module.ts           # root module — global guards + Throttler
-│   │   ├── common/                 # Prisma service, decorators, guards, filters
-│   │   ├── config/                 # env-driven typed config
-│   │   └── modules/                # auth, users, academic, courses, exams,
-│   │                               #   wallet, wallet-topup, purchases,
-│   │                               #   subscriptions, notifications, health
-│   ├── test/           # Jest e2e + unit (embedded-postgres for concurrency tests)
-│   └── docker-compose.yml          # local Postgres 16
-├── frontend/           # React SPA (port 5173 dev / static dist in prod)
-│   ├── src/
-│   │   ├── App.tsx                # role-based routing (student/instructor/admin)
-│   │   ├── api/                   # axios client + per-resource modules
-│   │   ├── components/            # layout (DashboardShell, RequireAuth) + UI
-│   │   ├── features/              # auth, student, instructor, admin pages
-│   │   ├── stores/authStore.ts    # Zustand auth state
-│   │   └── types/domain.ts        # mirrors backend Prisma types
-│   └── vite.config.ts             # /api/v2 proxy → http://localhost:3000
-├── docs/               # supplemental documentation (this folder)
-├── legacy/             # v1 reference (PHP-era frontend + admin SPAs)
-├── .env.example        # documented root env vars (see docs/LOCAL_DEV.md)
-├── DEPLOYMENT.md       # production install (systemd + Nginx + SSL)
-├── SECURITY_REVIEW.md  # security review across all domains
-├── SCHEMA.md           # Prisma schema narrative
-└── ANALYSIS.md         # full system analysis
+│   │   ├── server.js       # تطبيق Express وكل المسارات
+│   │   ├── db.js           # اتصال PostgreSQL وquery/transaction helpers
+│   │   └── schema.js       # تعريف الجداول وبيانات levels/terms الأولية
+│   ├── scripts/
+│   │   ├── migrate.js      # إنشاء schema في PostgreSQL
+│   │   ├── seed.js         # إنشاء حساب المسؤول
+│   │   └── check.js        # فحص تحميل التطبيق
+│   ├── package.json
+│   └── uploads/            # ملفات مرفوعة محليًا، ومجلدها مستثنى من Git
+├── frontend/
+│   ├── login.html
+│   ├── admin/              # لوحة المسؤول
+│   └── client/             # بوابة الطالب
+├── docs/
+├── legacy/                 # نسخة مرجعية قديمة من الواجهة
+├── SCHEMA.md
+├── ANALYSIS.md
+└── SECURITY_REVIEW.md
 ```
 
----
+## التشغيل المحلي
 
-## Quick start
+المتطلبات: Node.js 20+ وPostgreSQL.
+
+1. أنشئ قاعدة PostgreSQL، مثلًا باسم `law_lms`.
+2. من مجلد `backend` انسخ `.env.example` إلى `.env` واضبط `DATABASE_URL` و`SESSION_SECRET`.
+3. نفّذ الأوامر التالية:
 
 ```bash
-# 1) PostgreSQL via Docker Compose
-cd backend && docker compose up -d
-
-# 2) Backend
 cd backend
 npm install
-cp .env.example .env          # adjust SESSION_SECRET + DATABASE_URL
-npx prisma migrate deploy
-npm run prisma:seed            # creates admin + sample academic tree
-npm run start:dev              # http://localhost:3000
-
-# 3) Frontend (in a new shell)
-cd frontend
-npm install
-cp .env.example .env          # defaults are fine for local dev
-npm run dev                    # http://localhost:5173
+npm run migrate
+npm run seed
+npm start
 ```
 
-Then open <http://localhost:5173> and sign in with one of the
-[seed credentials](docs/SEED_CREDENTIALS.md).
+بعد التشغيل افتح `http://localhost:3000`، أو المنفذ الموجود في المتغير `PORT`.
 
-> The Vite dev server proxies `/api/v2/*` to the backend, so the frontend
-> never has to know the API host during development.
+`npm run migrate` ينفذ schema الموجود في `backend/src/schema.js`، ولا توجد migrations منفصلة أو Prisma schema.
 
----
+## أهم أوامر Backend
 
-## Scripts
+| الأمر | الوظيفة |
+|---|---|
+| `npm start` | تشغيل الخادم |
+| `npm run migrate` | إنشاء أو تحديث الجداول المعرفة في schema |
+| `npm run seed` | إنشاء حساب المسؤول |
+| `npm run check` | فحص تحميل التطبيق |
 
-### Backend (`/backend`)
+## API
 
-| Command                       | Purpose                                                  |
-| ----------------------------- | -------------------------------------------------------- |
-| `npm run build`               | Compile TypeScript → `dist/` (Nest CLI, no emit on error) |
-| `npm run start:dev`           | Watch-mode dev server (port 3000)                        |
-| `npm run start:prod`          | Run compiled `dist/main.js`                              |
-| `npm run lint`                | ESLint with auto-fix                                     |
-| `npm run format`              | Prettier write                                           |
-| `npm run prisma:generate`     | Regenerate Prisma client                                 |
-| `npm run prisma:migrate`      | `prisma migrate dev` (interactive)                       |
-| `npm run prisma:deploy`       | `prisma migrate deploy` (CI / production)               |
-| `npm run prisma:studio`       | Prisma Studio at <http://localhost:5555>                 |
-| `npm run prisma:seed`         | Run `prisma/seed.ts` (admin + sample hierarchy)          |
-| `npm test`                    | Jest unit + e2e (embedded PostgreSQL)                    |
-| `npm run test:cov`            | Coverage report → `coverage/`                            |
-| `npm run test:e2e`            | E2E against `DATABASE_URL_TEST`                          |
+- `POST /api/auth/login` و`POST /api/auth/register`: الدخول وتسجيل الطلاب.
+- `GET /api/auth/me`: بيانات الجلسة الحالية.
+- `/api/teacher/*`: مسارات المسؤول لإدارة المواد والمحاضرات والامتحانات والطلاب والأكواد.
+- `/api/student/*`: مسارات الطالب للمواد والاشتراكات والدروس والامتحانات والملف الشخصي.
+- `GET /api/health`: فحص حالة الخادم.
 
-### Frontend (`/frontend`)
+المسارات لا تستخدم `/api/v2`، والمصادقة تعتمد على جلسات الخادم وليس access/refresh tokens.
 
-| Command               | Purpose                                            |
-| --------------------- | -------------------------------------------------- |
-| `npm run dev`         | Vite dev server (HMR) on port 5173                 |
-| `npm run build`       | `tsc -b` strict type-check + Vite production build |
-| `npm run preview`     | Preview the production bundle locally              |
-| `npm run lint`        | ESLint                                             |
-| `npm run typecheck`   | `tsc --noEmit`                                     |
+## قاعدة البيانات
 
----
+الهيكل التعليمي هو:
 
-## Documentation
+`levels` -> `terms` -> `subjects` -> `lectures` -> `lecture_files`
 
-- [docs/LOCAL_DEV.md](docs/LOCAL_DEV.md) — Local development setup (step-by-step)
-- [docs/DOCKER.md](docs/DOCKER.md) — Docker Compose setup for Postgres + future images
-- [docs/SEED_CREDENTIALS.md](docs/SEED_CREDENTIALS.md) — Default users created by `prisma:seed`
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — Module map, financial guarantees, RBAC
-- [docs/API.md](docs/API.md) — REST endpoints (versioned under `/api/v2`)
-- [docs/DEPLOYMENT_OPERATIONS.md](docs/DEPLOYMENT_OPERATIONS.md) — Production checklist
-- [DEPLOYMENT.md](../DEPLOYMENT.md) — Arabic install + systemd + Nginx + SSL
-- [SECURITY_REVIEW.md](../SECURITY_REVIEW.md) — Domain-by-domain security review
-- [SCHEMA.md](../SCHEMA.md) — Prisma schema narrative
-- [ANALYSIS.md](../ANALYSIS.md) — Full system analysis
+وتشمل الجداول أيضًا المستخدمين والطلاب وأكواد التفعيل والاشتراكات والامتحانات والتقدم والإشعارات. التفاصيل موجودة في [SCHEMA.md](SCHEMA.md).
 
-The interactive Swagger UI is also available at
-<http://localhost:3000/docs> whenever the backend is running.
+## ملفات التوثيق
 
----
-
-## Production highlights
-
-- **Argon2id** password hashing (configurable cost params, defaults
-  pinned to OWASP 2024 guidance).
-- **JWT access tokens** (15 min) + **rotating refresh tokens** with
-  reuse-detection family revocation.
-- **Numeric money** (`NUMERIC(12,2)`), append-only ledger,
-  `SELECT … FOR UPDATE` row locks inside `Serializable` transactions.
-- **Idempotency keys** on every wallet transaction — replays resolve
-  to the original ledger row instead of double-charging.
-- **Helmet** security headers (HSTS in production), CORS allow-list,
-  global throttler (120 req/min/IP), and global `ValidationPipe`
-  with `forbidNonWhitelisted`.
-- **Per-role routing** on the frontend with `<RequireAuth roles={…}>`
-  guards redirecting wrong-role users back to their role's home.
-- **RTL Arabic UI** out of the box (`<html dir="rtl">`, Cairo /
-  Tajawal fonts), all domain data stored in Arabic + English.
-
-See [SECURITY_REVIEW.md](../SECURITY_REVIEW.md) for the full review and
-[DEPLOYMENT.md](../DEPLOYMENT.md) for the production install runbook.
+- [docs/LOCAL_DEV.md](docs/LOCAL_DEV.md): إعداد التشغيل المحلي.
+- [docs/API.md](docs/API.md): تفاصيل المسارات.
+- [docs/DEPLOYMENT_OPERATIONS.md](docs/DEPLOYMENT_OPERATIONS.md): قائمة تشغيل الإنتاج.
+- [SCHEMA.md](SCHEMA.md): تصميم PostgreSQL الحالي.
+- [SECURITY_REVIEW.md](SECURITY_REVIEW.md): المراجعة الأمنية.
+- [ANALYSIS.md](ANALYSIS.md): تحليل المشروع.
