@@ -4,15 +4,15 @@
 
 ## التقنيات
 
-| الجزء | التقنية |
-|---|---|
-| Backend | Node.js 20+ وExpress 4 |
-| Database | PostgreSQL عبر مكتبة `pg` وSQL مباشر بدون ORM |
+| الجزء          | التقنية                                                    |
+| -------------- | ---------------------------------------------------------- |
+| Backend        | Node.js 20+ وExpress 4                                     |
+| Database       | PostgreSQL عبر مكتبة `pg` وSQL مباشر بدون ORM              |
 | Authentication | `express-session` مع تخزين الجلسات عبر `connect-pg-simple` |
-| Passwords | `bcryptjs` |
-| Frontend | HTML وCSS وJavaScript بدون React أو Vite أو build step |
-| Uploads | `multer`، مع تخزين محلي اختياري أو Bunny Stream للفيديو |
-| Security | `helmet` و`express-rate-limit` والتحقق من محتوى الملفات |
+| Passwords      | `bcryptjs`                                                 |
+| Frontend       | HTML وCSS وJavaScript بدون React أو Vite أو build step     |
+| Uploads        | `multer`، مع تخزين محلي اختياري أو Bunny Stream للفيديو    |
+| Security       | `helmet` و`express-rate-limit` والتحقق من محتوى الملفات    |
 
 لا يستخدم المشروع NestJS أو Prisma أو JWT أو SQLite أو Docker Compose.
 
@@ -64,12 +64,12 @@ npm start
 
 ## أهم أوامر Backend
 
-| الأمر | الوظيفة |
-|---|---|
-| `npm start` | تشغيل الخادم |
+| الأمر             | الوظيفة                                  |
+| ----------------- | ---------------------------------------- |
+| `npm start`       | تشغيل الخادم                             |
 | `npm run migrate` | إنشاء أو تحديث الجداول المعرفة في schema |
-| `npm run seed` | إنشاء حساب المسؤول |
-| `npm run check` | فحص تحميل التطبيق |
+| `npm run seed`    | إنشاء حساب المسؤول                       |
+| `npm run check`   | فحص تحميل التطبيق                        |
 
 ## API
 
