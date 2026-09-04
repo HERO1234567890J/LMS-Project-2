@@ -13,6 +13,7 @@ const { schemaSql } = require('./schema');
 const { isBunnyConfigured, uploadLectureVideo, deleteLectureVideo, bunnyEmbedUrl } = require('./lib/bunnyStream');
 
 const app = express();
+app.set('trust proxy', 1);
 const rootDir = path.join(__dirname, '..', '..');
 const frontendDir = path.join(rootDir, 'frontend');
 const uploadDir = path.join(__dirname, '..', 'uploads');
