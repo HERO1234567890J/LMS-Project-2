@@ -511,7 +511,7 @@ function loadStudentStages() {
 
 function studentRowHTML(s) {
   // ترجمة كود المرحلة لاسمها بالعربي
-  const stagesMap = { 'prep3': 'الصف الثالث الإعدادي', 'sec1': 'الصف الأول الثانوي', 'sec2': 'الصف الثاني الثانوي' };
+  const stagesMap = { 'year1': 'الفرقة الأولى', 'year2': 'الفرقة الثانية', 'year3': 'الفرقة الثالثة', 'year4': 'الفرقة الرابعة' };
   const stageLabel = stagesMap[s.stage] || 'غير محدد';
 
   return `<tr>
@@ -565,13 +565,14 @@ async function showStudentProfile(id) {
     document.getElementById('spName').textContent = student.name;
     document.getElementById('spStatusTag').innerHTML = statusBadge(student.status);
     document.getElementById('spGov').textContent = `📍 المحافظة: ${student.governorate || '—'}`;
-    const stagesMap = { 'prep3': 'الصف الثالث الإعدادي', 'sec1': 'الصف الأول الثانوي', 'sec2': 'الصف الثاني الثانوي' };
+    const stagesMap = { 'year1': 'الفرقة الأولى', 'year2': 'الفرقة الثانية', 'year3': 'الفرقة الثالثة', 'year4': 'الفرقة الرابعة' };
     document.getElementById('spStage').textContent = `📚 المرحلة: ${stagesMap[student.stage] || 'غير محدد'}`;
     document.getElementById('spPhone').textContent = student.phone || '—';
     const wa = document.getElementById('spWaLink');
     if (student.phone) wa.href = `https://wa.me/${student.phone.replace(/\D/g, '')}`;
     else wa.style.display = 'none';
-    document.getElementById('spParentPhone').textContent = student.guardian_phone || '—';
+    const spParentPhoneEl = document.getElementById('spParentPhone');
+    if (spParentPhoneEl) spParentPhoneEl.textContent = student.guardian_phone || '—';
     document.getElementById('spStudentNumber').textContent = student.student_number || '—';
     document.getElementById('spRegDate').textContent = fmtDT(student.created_at);
     document.getElementById('spLastLogin').textContent = student.last_login_at ? fmtDT(student.last_login_at) : 'لم يسجل دخول بعد';
@@ -634,6 +635,7 @@ async function showStudentProfile(id) {
   }
 }
 
+window.openStudentById = function (id) { showStudentProfile(id); };
 async function toggleStudentStatus() {
   const id = stuState.currentProfileId;
   if (!id) return;
@@ -672,7 +674,7 @@ async function loadManualActivateCourses() {
   select.innerHTML = '<option value="">جارِ التحميل...</option>';
   try {
     const res = await api('/courses');
-    const stagesMap = { 'prep3': 'الصف الثالث الإعدادي', 'sec1': 'الصف الأول الثانوي', 'sec2': 'الصف الثاني الثانوي' };
+    const stagesMap = { 'year1': 'الفرقة الأولى', 'year2': 'الفرقة الثانية', 'year3': 'الفرقة الثالثة', 'year4': 'الفرقة الرابعة' };
 
     const studentStage = stuState.currentStudentStage;
     const filteredCourses = res.items.filter(c => c.stage === studentStage);
@@ -746,7 +748,7 @@ const examState = { course_id: '', exam_id: '', status: '', passed: '', page: 1,
 async function loadExamFilters() {
   try {
     const res = await api('/courses');
-    const stagesMap = { 'prep3': 'الصف الثالث الإعدادي', 'sec1': 'الصف الأول الثانوي', 'sec2': 'الصف الثاني الثانوي' };
+    const stagesMap = { 'year1': 'الفرقة الأولى', 'year2': 'الفرقة الثانية', 'year3': 'الفرقة الثالثة', 'year4': 'الفرقة الرابعة' };
 
     document.getElementById('exCourseFilter').innerHTML = '<option value="">الكل</option>' + res.items
       .map((c) => {
@@ -970,7 +972,7 @@ async function loadTeacherCourses() {
       return;
     }
 
-    const stagesMap = { 'prep3': 'الصف الثالث الإعدادي', 'sec1': 'الصف الأول الثانوي', 'sec2': 'الصف الثاني الثانوي' };
+    const stagesMap = { 'year1': 'الفرقة الأولى', 'year2': 'الفرقة الثانية', 'year3': 'الفرقة الثالثة', 'year4': 'الفرقة الرابعة' };
 
     grid.innerHTML = res.items.map(c => {
       const isArchived = c.status === 'archived';
@@ -981,6 +983,8 @@ async function loadTeacherCourses() {
       const safeName = esc(c.name_ar).replace(/'/g, "\\'");
       const safeDesc = esc(c.description || '').replace(/'/g, "\\'");
       const safeBadge = c.badge || 'normal';
+      const safeDoctor = esc(c.doctor_name || '').replace(/'/g, "\\'");
+      const safeCover = esc(c.cover_url || '').replace(/'/g, "\\'");
 
       return `
       <div class="course-card" style="${isArchived ? 'opacity: 0.6;' : ''}">
@@ -989,12 +993,13 @@ async function loadTeacherCourses() {
           <img src="${c.cover_url || 'https://via.placeholder.com/300x150?text=Course+Cover'}" style="width:100%; height:140px; object-fit:cover; border-radius:8px;">
         </div>
         <h3 style="margin-top: 10px;">${esc(c.name_ar)}</h3>
-        <p style="font-size:0.9rem; color:#555;">المرحلة: <strong>${stageLabel}</strong> | السعر: <strong>${c.price} ج</strong></p>
+        <p style="font-size:0.9rem; color:#555;">المرحلة: <strong>${stageLabel}</strong> | الترم: <strong>${c.term_name_ar || '-'}</strong> | السعر: <strong>${c.price} ج</strong></p>
+        <p style="font-size:0.9rem; color:#555;">المدرس: <strong>${esc(c.doctor_name || '-')}</strong></p>
 
         <div class="card-actions-row" style="margin-top:15px; display:flex; flex-wrap: wrap; gap:5px;">
           <button class="btn btn-sm btn-info" onclick="openLecturesManager(${c.id}, '${safeName}')" style="flex: 100%; background-color: #3b82f6; color: white; border: none;">📚 إدارة المحاضرات</button>
           
-          <button class="btn btn-sm btn-secondary" onclick="openEditCourse(${c.id}, '${safeName}', ${c.price}, '${c.stage}', '${safeDesc}', '${safeBadge}')" style="flex:1;">تعديل</button>
+          <button class="btn btn-sm btn-secondary" onclick="openEditCourse(${c.id}, '${safeName}', ${c.price}, '${c.stage}', '${safeDesc}', '${safeBadge}', '${c.term_code || ''}', '${safeDoctor}', '${safeCover}')" style="flex:1;">تعديل</button>
           <button class="btn btn-sm btn-warning" onclick="toggleCourseVisibility(${c.id}, '${c.status}')" style="flex:1;">
             ${isArchived ? 'إظهار' : 'إخفاء'}
           </button>
@@ -1008,13 +1013,23 @@ async function loadTeacherCourses() {
   }
 }
 
-window.openEditCourse = function (id, name, price, stage, desc, badge) {
+window.openEditCourse = function (id, name, price, stage, desc, badge, term, doctorName, coverUrl) {
   currentEditCourseId = id;
   document.getElementById('courseTitleInput').value = name;
   document.getElementById('coursePriceInput').value = price;
   document.getElementById('courseStageInput').value = stage;
+  document.getElementById('courseTermInput').value = term;
+  document.getElementById('courseTeacherInput').value = doctorName;
   document.getElementById('courseDescInput').value = desc;
   document.getElementById('courseBadgeInput').value = badge;
+
+  const coverPreview = document.getElementById('courseCoverPreview');
+  if (coverPreview) {
+    if (coverUrl) { coverPreview.src = coverUrl; coverPreview.style.display = 'block'; }
+    else { coverPreview.style.display = 'none'; }
+  }
+  const imgInput = document.getElementById('courseImageInput');
+  if (imgInput) imgInput.removeAttribute('required');
 
   document.querySelector('#newCourseModal h3').innerHTML = '✏️ تعديل بيانات المادة';
   document.querySelector('#newCourseForm button[type="submit"]').innerHTML = 'حفظ التعديلات 💾';
@@ -1054,6 +1069,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (courseForm) courseForm.reset();
     document.querySelector('#newCourseModal h3').innerHTML = '➕ إضافة مادة جديدة';
     document.querySelector('#newCourseForm button[type="submit"]').innerHTML = 'حفظ ونشر المادة فوراً 🚀';
+    const coverPreview = document.getElementById('courseCoverPreview');
+    if (coverPreview) coverPreview.style.display = 'none';
+    const imgInput = document.getElementById('courseImageInput');
+    if (imgInput) imgInput.setAttribute('required', 'required');
     closeModal('newCourseModal');
   };
 
@@ -1070,9 +1089,19 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.textContent = 'جارِ الحفظ...';
 
       try {
+        const newCoverFile = document.getElementById('courseImageInput').files[0];
+        if (!currentEditCourseId && !newCoverFile) {
+          toast('من فضلك اختر صورة غلاف المادة', 'error');
+          btn.disabled = false;
+          btn.textContent = originalText;
+          return;
+        }
+
         const payload = {
           name_ar: document.getElementById('courseTitleInput').value.trim(),
           stage: document.getElementById('courseStageInput').value,
+          term: document.getElementById('courseTermInput').value,
+          doctor_name: document.getElementById('courseTeacherInput').value,
           price: Number(document.getElementById('coursePriceInput').value),
           description: document.getElementById('courseDescInput').value.trim(),
           badge: document.getElementById('courseBadgeInput').value,

@@ -109,7 +109,7 @@
           </div>
 
           <h3>${esc(c.name_ar)}</h3>
-          <p class="course-meta">${esc(c.stage_name_ar)} · ${esc(c.subject_name_ar)} · ${esc(c.month_name_ar)}</p>
+          <p class="course-meta">${esc(c.stage_name_ar)} · ${esc(c.term_name_ar || '')} · د. ${esc(c.doctor_name || 'غير محدد')}</p>
           <p class="course-desc">${esc(c.description || '')}</p>
           <div class="course-price">${c.price} جنيه <span class="course-lessons">${c.lessons_count} درس</span></div>
           <button class="btn btn-primary activate-btn" data-id="${c.id}" data-name="${esc(c.name_ar)}">تفعيل بالكود</button>
@@ -227,7 +227,7 @@
       state.currentCourseName = data.course.name_ar;
       $('heroCourseTitle').textContent = data.course.name_ar;
       $('heroCourseSubtitle').textContent = data.course.description || '';
-      $('heroBreadcrumb').textContent = `${data.course.stage_name_ar} · ${data.course.subject_name_ar} · ${data.course.month_name_ar}`;
+      $('heroBreadcrumb').textContent = `${data.course.stage_name_ar} · ${data.course.term_name_ar || ''} · د. ${data.course.doctor_name || 'غير محدد'}`;
       $('heroLessonsCount').textContent = data.progress.total_lessons;
       $('heroPassedCount').textContent = data.progress.passed_lessons;
       $('heroPercent').textContent = data.progress.completed_percent + '%';
@@ -788,9 +788,10 @@ window.buyLecture = function() {
 
       // قاموس ترجمة المراحل
       const stagesMap = {
-        'prep3': 'الصف الثالث الإعدادي',
-        'sec1': 'الصف الأول الثانوي',
-        'sec2': 'الصف الثاني الثانوي'
+        'year1': 'الفرقة الأولى',
+        'year2': 'الفرقة الثانية',
+        'year3': 'الفرقة الثالثة',
+        'year4': 'الفرقة الرابعة'
       };
 
       // جلب اسم الطالب والمرحلة
@@ -840,7 +841,7 @@ window.buyLecture = function() {
     });
 
     // Catalog activation
-    $('availableCoursesGrid').addEventListener('click', (e) => {
+    ($('availableCoursesGrid') || $('availableSubjectsGrid')).addEventListener('click', (e) => {
       const btn = e.target.closest('.activate-btn');
       if (btn) openActivationModal({ id: Number(btn.getAttribute('data-id')), name: btn.getAttribute('data-name') });
     });

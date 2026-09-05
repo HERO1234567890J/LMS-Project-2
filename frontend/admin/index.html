@@ -165,10 +165,10 @@
                 <label>1. اختر الفرقة</label>
                 <select id="adminStageFilter" class="form-control">
                   <option value="">-- اختر الفرقة --</option>
-                  <option value="law1">الفرقة الأولى</option>
-                  <option value="law2">الفرقة الثانية</option>
-                  <option value="law3">الفرقة الثالثة</option>
-                  <option value="law4">الفرقة الرابعة</option>
+                  <option value="year1">الفرقة الأولى</option>
+                  <option value="year2">الفرقة الثانية</option>
+                  <option value="year3">الفرقة الثالثة</option>
+                  <option value="year4">الفرقة الرابعة</option>
                   <option value="diploma">دبلومات الدراسات العليا</option>
                 </select>
               </div>
@@ -237,10 +237,10 @@
                 <label>1. الفرقة الدراسية</label>
                 <select id="acStageSelect" class="form-control">
                   <option value="">-- اختر الفرقة --</option>
-                  <option value="law1">الفرقة الأولى</option>
-                  <option value="law2">الفرقة الثانية</option>
-                  <option value="law3">الفرقة الثالثة</option>
-                  <option value="law4">الفرقة الرابعة</option>
+                  <option value="year1">الفرقة الأولى</option>
+                  <option value="year2">الفرقة الثانية</option>
+                  <option value="year3">الفرقة الثالثة</option>
+                  <option value="year4">الفرقة الرابعة</option>
                   <option value="diploma">دبلومات الدراسات العليا</option>
                 </select>
               </div>
@@ -406,10 +406,10 @@
               <div class="form-group">
                 <label>المرحلة الدراسية (اشتراكات)</label>
                 <select id="stuStageFilter" class="form-control">
-                  <option value="law1">الفرقة الأولى</option>
-                  <option value="law2">الفرقة الثانية</option>
-                  <option value="law3">الفرقة الثالثة</option>
-                  <option value="law4">الفرقة الرابعة</option>
+                  <option value="year1">الفرقة الأولى</option>
+                  <option value="year2">الفرقة الثانية</option>
+                  <option value="year3">الفرقة الثالثة</option>
+                  <option value="year4">الفرقة الرابعة</option>
                   <option value="diploma">دبلومات الدراسات العليا</option>
                 </select>
               </div>
@@ -474,8 +474,8 @@
                 <ul>
                   <li><strong>رقم هاتف الطالب:</strong> <span id="spPhone">–</span> <a href="#" target="_blank"
                       class="wa-link" id="spWaLink">💬 واتساب</a></li>
-                  <li><strong>رقم ولي الأمر:</strong> <span id="spParentPhone">–</span></li>
-                  <li><strong>الطلابية:</strong> <span id="spStudentNumber">–</span></li>
+                  <!-- <li><strong>رقم ولي الأمر:</strong> <span id="spParentPhone">–</span></li> -->
+                  <li><strong>الرقم الطلابي:</strong> <span id="spStudentNumber">–</span></li>
                   <li><strong>تاريخ التسجيل:</strong> <span id="spRegDate">–</span></li>
                   <li><strong>آخر دخول:</strong> <span id="spLastLogin">–</span></li>
                 </ul>
@@ -894,10 +894,10 @@
             <label>الفرقة الدراسية <span class="required">*</span></label>
             <select id="courseStageInput" class="select-dropdown form-control" required>
               <option value="" disabled selected>-- اختر الفرقة --</option>
-              <option value="law1">الفرقة الأولى</option>
-              <option value="law2">الفرقة الثانية</option>
-              <option value="law3">الفرقة الثالثة</option>
-              <option value="law4">الفرقة الرابعة</option>
+              <option value="year1">الفرقة الأولى</option>
+              <option value="year2">الفرقة الثانية</option>
+              <option value="year3">الفرقة الثالثة</option>
+              <option value="year4">الفرقة الرابعة</option>
               <option value="diploma">دبلومات الدراسات العليا</option>
             </select>
           </div>
@@ -915,10 +915,10 @@
             <label>المدرس <span class="required">*</span></label>
             <select id="courseTeacherInput" class="select-dropdown form-control" required>
               <option value="" disabled selected>-- اختر المدرس --</option>
-              <option value="1">د. أحمد طه</option>
-              <option value="2">د. جمال عبد الناصر</option>
-              <option value="3">د. عبد الرحمن رزق</option>
-              <option value="4">د. كريم صبحي</option>
+              <option value="د. أحمد طه">د. أحمد طه</option>
+              <option value="د. جمال عبد الناصر">د. جمال عبد الناصر</option>
+              <option value="د. عبد الرحمن رزق">د. عبد الرحمن رزق</option>
+              <option value="د. كريم صبحي">د. كريم صبحي</option>
             </select>
           </div>
 
@@ -931,8 +931,9 @@
           <!-- صورة غلاف المادة -->
           <div class="form-group full-width">
             <label>صورة غلاف المادة <span class="required">*</span></label>
-            <input type="file" id="courseImageInput" class="form-control" accept="image/png, image/jpeg, image/jpg"
-              required>
+            <input type="file" id="courseImageInput" class="form-control" accept="image/png, image/jpeg, image/jpg">
+            <img id="courseCoverPreview" src="" alt="الصورة الحالية" style="display:none; max-width:150px; margin-top:8px; border-radius:8px;">
+            <small style="color:#777;">اتركه فارغًا عند التعديل للإبقاء على الصورة الحالية</small>
           </div>
 
           <!-- وصف مختصر -->

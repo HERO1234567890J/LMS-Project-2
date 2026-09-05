@@ -181,8 +181,7 @@ function codeValue() {
 async function subjectRows(where = '', params = []) {
   const { rows } = await query(
     `SELECT s.*, l.code AS stage, l.name_ar AS stage_name_ar, t.code AS term_code, t.name_ar AS term_name_ar,
-            s.name_ar AS subject_name_ar, s.name_ar AS month_name_ar,
-            s.name_ar AS course_name_ar, s.price_egp AS price,
+            s.doctor_name AS doctor_name, s.name_ar AS course_name_ar, s.price_egp AS price,
             COALESCE((SELECT count(*)::int FROM lectures le WHERE le.subject_id = s.id), 0) AS lessons_count
      FROM subjects s
      JOIN levels l ON l.id = s.level_id
@@ -241,6 +240,9 @@ app.post('/api/auth/register', async (req, res) => {
     const body = req.body;
     if (!body.name || !body.phone || !body.password) return res.status(400).json({ message: 'Name, phone, and password are required' });
     if (body.password !== (body.password_confirmation || body.password)) return res.status(400).json({ message: 'Password confirmation does not match' });
+    if (String(body.password).length < 8) return res.status(400).json({ message: 'كلمة المرور يجب ألا تقل عن 8 أحرف' });
+    const __nameParts = String(body.name || '').trim().split(/\s+/).filter(Boolean);
+    if (__nameParts.length < 4) return res.status(400).json({ message: 'يجب إدخال الاسم رباعيًا (4 أسماء على الأقل)' });
     const levelCode = normalizeLevel(body.grade || body.stage || body.level);
     const { rows: levels } = await query('SELECT id, code FROM levels WHERE code = $1', [levelCode]);
     const level = levels[0] || (await query('SELECT id, code FROM levels ORDER BY sort_order LIMIT 1')).rows[0];
@@ -534,7 +536,17 @@ teacher.get('/students/:id', async (req, res) => {
       `SELECT ea.*, e.title AS exam_title FROM exam_attempts ea JOIN exams e ON e.id = ea.exam_id WHERE ea.student_id = $1 ORDER BY ea.started_at DESC`,
       [req.params.id],
     );
-    res.json({ student: user, subscriptions: subs.rows, attempts: attempts.rows, stats: { subscriptions: subs.rows.length, attempts: attempts.rows.length } });
+    const passedLessons = await query(
+      `SELECT count(*)::int AS c FROM lesson_progress WHERE student_id = $1`,
+      [req.params.id],
+    );
+    const stats = {
+      active_courses: subs.rows.filter((s) => s.status === 'active').length,
+      total_attempts: attempts.rows.length,
+      passed_attempts: attempts.rows.filter((a) => a.passed).length,
+      passed_lessons: passedLessons.rows[0]?.c || 0,
+    };
+    res.json({ student: user, subscriptions: subs.rows, attempts: attempts.rows, stats });
   } catch (err) { sendError(res, err); }
 });
 

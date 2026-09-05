@@ -443,7 +443,7 @@
                                 <label>كلمة المرور <span class="req">*</span></label>
                                 <div class="input-wrapper">
                                     <input class="flip-card__input" name="password" id="regPassword"
-                                        placeholder="كلمة مرور قوية" type="password" required>
+                                        placeholder="كلمة مرور قوية" type="password" minlength="8" required>
                                     <span class="input-icon" onclick="togglePassword('regPassword')">
                                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
                                             stroke="currentColor" stroke-width="2">
@@ -581,6 +581,21 @@
                 grade: formData.get("governorate"),
                 division: formData.get("division")
             };
+
+
+            // ---- فحص إضافي قبل الإرسال ----
+            const __nameParts = String(payload.name || "").trim().split(/\s+/).filter(Boolean);
+            if (__nameParts.length < 4) {
+                document.getElementById("registerMessage").style.color = "#ef4444";
+                document.getElementById("registerMessage").innerText = "الاسم يجب أن يكون رباعيًا (4 أسماء على الأقل)";
+                return;
+            }
+            if (String(payload.password || "").length < 8) {
+                document.getElementById("registerMessage").style.color = "#ef4444";
+                document.getElementById("registerMessage").innerText = "كلمة المرور يجب ألا تقل عن 8 أحرف";
+                return;
+            }
+            
 
             try {
                 const response = await fetch(`${API_URL}/register`, {
