@@ -966,7 +966,15 @@ async function loadTeacherCourses() {
   grid.innerHTML = '<div style="width: 100%; text-align: center; padding: 20px;">جارِ تحميل الكورسات...</div>';
 
   try {
-    const res = await api('/courses');
+    const stageVal = document.getElementById('adminStageFilter')?.value || '';
+    const termVal = document.getElementById('adminTermFilter')?.value || '';
+    const doctorVal = document.getElementById('adminTeacherFilter')?.value || '';
+    const qs = new URLSearchParams();
+    if (stageVal) qs.set('stage', stageVal);
+    if (termVal) qs.set('term', termVal);
+    if (doctorVal) qs.set('doctor_name', doctorVal);
+    const res = await api(`/courses${qs.toString() ? '?' + qs.toString() : ''}`);
+    populateTeacherFilterOptions(res.items);
     if (!res.items.length) {
       grid.innerHTML = '<div style="width: 100%; text-align: center; padding: 20px; color: #777;">لا توجد كورسات مضافة بعد. اضغط على "+ إضافة كورس جديد" للبدء.</div>';
       return;
@@ -1013,6 +1021,25 @@ async function loadTeacherCourses() {
   }
 }
 
+function populateTeacherFilterOptions(items) {
+  const doctorSelect = document.getElementById('adminTeacherFilter');
+  if (!doctorSelect) return;
+  const currentValue = doctorSelect.value;
+  const doctors = [...new Set(items.map((c) => c.doctor_name).filter(Boolean))].sort();
+  doctorSelect.innerHTML = '<option value="">-- كل المدرسين --</option>' +
+    doctors.map((d) => `<option value="${esc(d)}">${esc(d)}</option>`).join('');
+  if (doctors.includes(currentValue)) doctorSelect.value = currentValue;
+}
+function initTeacherCourseFilters() {
+  const stageEl = document.getElementById('adminStageFilter');
+  const termEl = document.getElementById('adminTermFilter');
+  const doctorEl = document.getElementById('adminTeacherFilter');
+  if (!stageEl || stageEl.dataset.bound) return;
+  stageEl.dataset.bound = '1';
+  [stageEl, termEl, doctorEl].forEach((el) => {
+    el?.addEventListener('change', () => loadTeacherCourses());
+  });
+}
 window.openEditCourse = function (id, name, price, stage, desc, badge, term, doctorName, coverUrl) {
   currentEditCourseId = id;
   document.getElementById('courseTitleInput').value = name;
@@ -1057,6 +1084,7 @@ window.deleteCourse = async function (id) {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  initTeacherCourseFilters();
   loadTeacherCourses();
 
   const openCourseBtn = document.getElementById('openNewCourseModal');

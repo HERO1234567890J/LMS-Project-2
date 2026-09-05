@@ -320,6 +320,8 @@ teacher.get('/courses', async (req, res) => {
     const clauses = [];
     const params = [];
     if (req.query.stage) { params.push(normalizeLevel(req.query.stage)); clauses.push(`l.code = $${params.length}`); }
+    if (req.query.term) { params.push(req.query.term); clauses.push(`t.code = $${params.length}`); }
+    if (req.query.doctor_name) { params.push(`%${req.query.doctor_name}%`); clauses.push(`s.doctor_name ILIKE $${params.length}`); }
     const items = await subjectRows(clauses.length ? `WHERE ${clauses.join(' AND ')}` : '', params);
     res.json({ items });
   } catch (err) { sendError(res, err); }
