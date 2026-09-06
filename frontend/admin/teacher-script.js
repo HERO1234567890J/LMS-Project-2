@@ -227,19 +227,16 @@ function closeModal(id) {
 function initHierarchyFilters() {
   const stageSelect = document.getElementById('acStageSelect');
   const termSelect = document.getElementById('acTermSelect');
-  const doctorFilter = document.getElementById('acDoctorFilter');
   const courseSelect = document.getElementById('acCourseSelect');
 
-  if (!stageSelect || !termSelect || !doctorFilter || !courseSelect) return;
+  if (!stageSelect || !termSelect || !courseSelect) return;
 
   let stageCourses = [];
 
   function renderCourseOptions() {
     const term = termSelect.value;
-    const doctorQuery = doctorFilter.value.trim().toLowerCase();
     const filtered = stageCourses.filter((c) => {
       if (term && c.term_code !== term) return false;
-      if (doctorQuery && !(c.doctor_name || '').toLowerCase().includes(doctorQuery)) return false;
       return true;
     });
     if (!filtered.length) {
@@ -254,13 +251,11 @@ function initHierarchyFilters() {
   stageSelect.addEventListener('change', async () => {
     if (!stageSelect.value) {
       termSelect.disabled = true;
-      doctorFilter.disabled = true;
       courseSelect.disabled = true;
       courseSelect.innerHTML = '<option value="">-- اختر المادة --</option>';
       return;
     }
     termSelect.disabled = false;
-    doctorFilter.disabled = false;
     courseSelect.disabled = false;
     courseSelect.innerHTML = '<option value="">جارِ جلب المواد...</option>';
     try {
@@ -274,7 +269,6 @@ function initHierarchyFilters() {
   });
 
   termSelect.addEventListener('change', renderCourseOptions);
-  doctorFilter.addEventListener('input', renderCourseOptions);
 }
 
 function questionCardHTML() {
