@@ -82,6 +82,23 @@ CREATE TABLE IF NOT EXISTS lecture_files (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+-- أعمدة تخزين PDF على Cloudflare R2 (بدل التخزين المحلي).
+ALTER TABLE lecture_files ADD COLUMN IF NOT EXISTS storage TEXT NOT NULL DEFAULT 'local' CHECK (storage IN ('local','r2'));
+ALTER TABLE lecture_files ADD COLUMN IF NOT EXISTS r2_object_key TEXT;
+ALTER TABLE lecture_files ALTER COLUMN url DROP NOT NULL;
+
+CREATE TABLE IF NOT EXISTS document_access_logs (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  document_id INTEGER REFERENCES lecture_files(id) ON DELETE SET NULL,
+  course_id INTEGER,
+  ip_address TEXT,
+  result TEXT NOT NULL CHECK (result IN ('granted','denied')),
+  reason TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS idx_doc_access_logs_user ON document_access_logs(user_id);
+
 CREATE TABLE IF NOT EXISTS activation_codes (
   id SERIAL PRIMARY KEY,
   code TEXT NOT NULL UNIQUE,

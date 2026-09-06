@@ -51,3 +51,6 @@ pnpm-debug.log*
 
 # Allow Prisma migration SQL files (they ARE part of the codebase, not dumps).
 !backend/prisma/migrations/**/*.sql
+backend/patch_upload_route.py
+*.bak.*
+backups/

@@ -11,6 +11,7 @@ const rateLimit = require('express-rate-limit');
 const { pool, query, tx } = require('./db');
 const { schemaSql } = require('./schema');
 const { isBunnyConfigured, uploadLectureVideo, deleteLectureVideo, bunnyEmbedUrl } = require('./lib/bunnyStream');
+const { isR2Configured, buildDocumentKey, ensureStorageCap, uploadPdfBuffer, getSignedDownloadUrl } = require('./lib/r2');
 
 const app = express();
 app.set('trust proxy', 1);
@@ -452,16 +453,51 @@ teacher.post('/lessons/:id/video', videoUpload.single('video'), async (req, res)
   } catch (err) { sendError(res, err); }
 });
 
-teacher.post('/lessons/:id/files', upload.array('attachments', 10), async (req, res) => {
+// رفع مرفقات الدرس في الذاكرة (buffer) بدل الديسك - مطلوب عشان نتحقق من نوع
+// الملف الحقيقي ونرفع ملفات الـ PDF على Cloudflare R2. ملفات الـ ZIP تتخزن
+// محليًا زي الأسلوب القديم بالظبط.
+const documentUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: Number(process.env.MAX_UPLOAD_BYTES || 100 * 1024 * 1024) },
+});
+
+teacher.post('/lessons/:id/files', documentUpload.array('attachments', 10), async (req, res) => {
   try {
+    const lecture = (await query('SELECT id, subject_id FROM lectures WHERE id = $1', [req.params.id])).rows[0];
+    if (!lecture) { const err = new Error('Lecture not found'); err.status = 404; throw err; }
+
     const items = [];
     for (const file of req.files || []) {
-      const url = await validateUpload(file, ['application/pdf', 'application/zip']);
-      const row = await query(
-        'INSERT INTO lecture_files (lecture_id, title, url, mime_type, file_size) VALUES ($1,$2,$3,$4,$5) RETURNING *',
-        [req.params.id, file.originalname, url, file.mimetype, file.size],
-      );
-      items.push(row.rows[0]);
+      const kind = bufferKind(file.buffer);
+
+      if (kind === 'application/pdf') {
+        if (!isR2Configured()) {
+          const err = new Error('Cloudflare R2 غير مُعدّ على السيرفر. تواصل مع المطوّر.');
+          err.status = 500;
+          throw err;
+        }
+        await ensureStorageCap(file.buffer.length);
+        const { key } = buildDocumentKey(lecture.subject_id, lecture.id);
+        await uploadPdfBuffer(file.buffer, key);
+        const row = await query(
+          'INSERT INTO lecture_files (lecture_id, title, url, mime_type, file_size, storage, r2_object_key) VALUES ($1,$2,NULL,$3,$4,$5,$6) RETURNING *',
+          [req.params.id, file.originalname, file.mimetype, file.size, 'r2', key],
+        );
+        items.push(row.rows[0]);
+      } else if (kind === 'application/zip') {
+        const filename = `${Date.now()}-${crypto.randomBytes(8).toString('hex')}.zip`;
+        await fs.promises.writeFile(path.join(uploadDir, filename), file.buffer);
+        const url = `/uploads/${filename}`;
+        const row = await query(
+          'INSERT INTO lecture_files (lecture_id, title, url, mime_type, file_size, storage) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *',
+          [req.params.id, file.originalname, url, file.mimetype, file.size, 'local'],
+        );
+        items.push(row.rows[0]);
+      } else {
+        const err = new Error('Rejected file content type');
+        err.status = 400;
+        throw err;
+      }
     }
     res.json({ items });
   } catch (err) { sendError(res, err); }
