@@ -348,7 +348,18 @@ window.buyLecture = function() {
       container.innerHTML = '<p class="empty-state">لا توجد ملفات مرفقة مع هذا الدرس.</p>';
       return;
     }
-    container.innerHTML = files.map((f) => `
+    container.innerHTML = files.map((f) => (f.protected ? `
+      <div class="pdf-file-item">
+        <div class="pdf-icon">📄</div>
+        <div class="pdf-info">
+          <h4>${esc(f.title)}</h4>
+          ${f.file_size ? `<span>الحجم: ${Math.round(f.file_size / 1024)} كيلوبايت</span>` : ''}
+        </div>
+        <div class="pdf-actions">
+          <button type="button" class="btn btn-primary btn-sm ppv-open-btn" data-doc-id="${f.id}" data-doc-title="${esc(f.title)}">👁️ فتح المستند</button>
+        </div>
+        <div class="ppv-mount" data-mount-for="${f.id}"></div>
+      </div>` : `
       <div class="pdf-file-item">
         <div class="pdf-icon">📄</div>
         <div class="pdf-info">
@@ -359,7 +370,22 @@ window.buyLecture = function() {
           <a href="${esc(f.url)}" target="_blank" rel="noopener" class="btn btn-outline btn-sm">👁️ معاينة</a>
           <a href="${esc(f.url)}" download class="btn btn-primary btn-sm">📥 تحميل الملف</a>
         </div>
-      </div>`).join('');
+      </div>`)).join('');
+
+    container.querySelectorAll('.ppv-open-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-doc-id');
+        const title = btn.getAttribute('data-doc-title');
+        const mount = container.querySelector(`.ppv-mount[data-mount-for="${id}"]`);
+        if (!mount) return;
+        btn.remove();
+        window.ProtectedPdfViewer.mount(mount, {
+          documentId: id,
+          title: title,
+          accessUrl: (docId) => `/api/student/documents/${docId}/access`,
+        });
+      });
+    });
   }
 
   function renderExams(exams) {

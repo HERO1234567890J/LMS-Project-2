@@ -1,0 +1,196 @@
+/* ==========================================================================
+   Protected PDF Viewer — styles
+   تصميم محايد وبسيط يندمج مع أي صفحة درس موجودة، بدون فرض هوية بصرية جديدة.
+   ========================================================================== */
+
+.ppv-root {
+  --ppv-bg: #1c1f24;
+  --ppv-bar-bg: #14161a;
+  --ppv-text: #e8e9eb;
+  --ppv-muted: #9aa0a8;
+  --ppv-accent: #3d7bfd;
+  --ppv-danger: #e0574a;
+  --ppv-radius: 10px;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 80vh;
+  min-height: 420px;
+  background: var(--ppv-bg);
+  border-radius: var(--ppv-radius);
+  overflow: hidden;
+  font-family: -apple-system, "Segoe UI", Tahoma, Arial, sans-serif;
+  direction: rtl;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.ppv-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--ppv-bar-bg);
+  color: var(--ppv-text);
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.ppv-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.ppv-page-indicator {
+  color: var(--ppv-muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 64px;
+  text-align: center;
+}
+
+.ppv-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--ppv-text);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.ppv-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.ppv-btn:focus-visible {
+  outline: 2px solid var(--ppv-accent);
+  outline-offset: 1px;
+}
+
+.ppv-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: #2a2d33;
+}
+
+.ppv-page-wrap {
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  background: #fff;
+  max-width: 100%;
+}
+
+.ppv-page-wrap canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  pointer-events: none; /* يمنع سحب/حفظ الصورة من قائمة الكليك اليمين على العنصر نفسه */
+}
+
+.ppv-page-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ppv-muted);
+  background: #fff;
+  min-height: 300px;
+  width: 100%;
+  font-size: 13px;
+}
+
+.ppv-status {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ppv-text);
+  gap: 10px;
+  font-size: 14px;
+}
+
+.ppv-status.ppv-status-error {
+  color: var(--ppv-danger);
+  text-align: center;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.ppv-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-top-color: var(--ppv-text);
+  border-radius: 50%;
+  animation: ppv-spin 0.8s linear infinite;
+}
+
+@keyframes ppv-spin {
+  to { transform: rotate(360deg); }
+}
+
+.ppv-toast {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: rgba(20, 22, 26, 0.95);
+  color: var(--ppv-text);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 5;
+}
+
+.ppv-toast.ppv-toast-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.ppv-notice {
+  padding: 8px 14px;
+  background: #262a30;
+  color: var(--ppv-muted);
+  font-size: 12px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* منع طباعة المحتوى: أي محاولة طباعة (حتى لو التفّت على منع Ctrl+P) هتطلع
+   صفحة فاضية فيها رسالة بدل محتوى الملف. مفيش ضمانة 100% لمنع لقطة شاشة أو
+   تصوير الشاشة، لكن ده أقصى منع عملي متاح من متصفح ويب عادي. */
+@media print {
+  .ppv-root {
+    display: none !important;
+  }
+  .ppv-print-block-message {
+    display: block !important;
+    padding: 40px;
+    text-align: center;
+    font-family: sans-serif;
+  }
+}
+
+.ppv-print-block-message {
+  display: none;
+}
+
