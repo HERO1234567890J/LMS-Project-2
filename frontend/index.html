@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <!-- عنوان الصفحة (أهم عنصر في محركات البحث) -->
+  <title>أكاديمية المستشار | المنصة التعليمية الأولى لطلاب كلية الحقوق</title>
+
+  <!-- وصف المنصة (يظهر تحت الرابط في نتائج بحث جوجل) -->
+  <meta name="description"
+    content="منصة أكاديمية المستشار هي الوجهة التعليمية الأفضل لطلاب كلية الحقوق. نقدم كورسات قانونية، شروحات مبسطة للمواد، مراجعات نهائية، وتدريبات عملية لضمان تفوقك بامتياز.">
+
+  <!-- الكلمات المفتاحية (تساعد في استهداف بحث الطلاب) -->
+  <meta name="keywords"
+    content="أكاديمية المستشار, كلية الحقوق, طلاب الحقوق, كورسات قانون, مراجعات حقوق, شروحات قانونية, تدريب قانوني, مواد الحقوق, ليسانس حقوق, كلية الشريعة والقانون">
+
+  <!-- إعدادات المشاركة على السوشيال ميديا (فيسبوك، واتساب، تويتر) -->
+  <meta property="og:title" content="أكاديمية المستشار | لطلاب كلية الحقوق">
+  <meta property="og:description"
+    content="انضم لأكاديمية المستشار واستفد بأفضل الشروحات والمراجعات القانونية لضمان تفوقك في كلية الحقوق.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/img/misc/logo.png"> <!-- تأكد أن مسار اللوجو صحيح -->
+
+  <!-- Favicons -->
+  <link href="assets/img/misc/logo.png" rel="icon">
+  <link href="assets/img/misc/logo.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <!-- خط Cairo ممتاز جداً للمواقع العربية -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <!-- ملحوظة: يُفضل استخدام نسخة RTL من Bootstrap إذا كان الموقع عربي بالكامل -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+  <style>
+    /* تطبيق الخط على الموقع بشكل عام */
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+
+    /* إذا كنت مُصر تستخدم * مع !important، لازم تستثني الأيقونات بالشكل ده: */
+    *:not(i):not([class^="bi-"]):not([class*=" bi-"]) {
+      font-family: 'Cairo', sans-serif !important;
+    }
+  </style>
+
+  <!-- Owl Carousel CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+
+  <!-- jQuery + Owl Carousel JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header d-flex align-items-center position-relative">
+    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+
+
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="#hero" class="active">Home</a></li>
+          <li><a href="#about">عن منصتنا</a></li>
+          <li><a href="#services">دوراتنا</a></li>
+          <li><a href="#logos">اراء طلابنا</a></li>
+          <li><a href="#portfolio">نتائج طلابنا</a></li>
+          <li><a href="#features"> مميزات المنصه</a></li>
+          <li><a href="#faq">اجابات اسألتك</a></li>
+          <li><a href="#contact">تواصل معنا</a></li>
+          <a href="client.html" class="login-btn"> حسابى</a>
+          <a href="about.html">من انا؟</a>
+
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+    </div>
+    <div class="login-btn-wrapper">
+      <a href="login.html" class="login-btn">تسجيل الدخول</a>
+    </div>
+    <style>
+      .login-btn-wrapper {
+        position: fixed;
+        top: 20px;
+        inset-inline-start: 20px;
+        z-index: 9999;
+      }
+
+      .login-btn {
+        /* جعل الأخضر الزمردي هو اللون الأساسي للزر */
+        background: #10b981;
+        color: #ffffff;
+        padding: 10px 22px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        border: 1px solid rgba(16, 185, 129, 0.5);
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
+        /* توهج خفيف يناسب الهوية الخضراء */
+        transition: 0.3s ease;
+      }
+
+      .login-btn:hover {
+        /* عند المرور، يتحول إلى تدرج أخضر مع أزرق داكن خفيف أو أخضر أعمق */
+        background: #059669;
+        color: #ffffff;
+        border-color: #059669;
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+      }
+    </style>
+  </header>
+
+  <main class="main">
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero section">
+      <div class="container">
+        <div class="row align-items-center">
+
+          <!-- تم تعديل المساحة هنا من col-lg-8 إلى col-lg-6 -->
+          <div class="col-lg-6 col-12 hero-visual order-lg-1 order-2" data-aos="fade-up" data-aos-delay="200">
+            <div class="image-wrapper">
+              <img src="assets/img/illustration/Gemini_Generated_Image_4xmzca4xmzca4xmz.png" alt="Creative Design"
+                class="main-image">
+
+
+
+            </div>
+          </div>
+
+          <!-- تم تكبير مساحة النص هنا من col-lg-4 إلى col-lg-6 -->
+          <div class="col-lg-6 col-12 hero-content order-lg-2 order-1" data-aos="fade-up" data-aos-delay="100"
+            dir="rtl">
+
+            <h1 class="title fw-bold" style="font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 20px;">
+              اكاديمية <span style="color: #10b981;">المستشار </span>التعليمية
+            </h1>
+
+            <div class="description" style="font-size: 1.25rem; line-height: 1.8; margin-bottom: 20px;">
+              <p>
+                اكادمية المستشار التعليمية
+                متخصصين في تدريس مواد كليات <strong style="color: #10b981;">الحقوق والقانون </strong>
+                وتحقيق التفوق الأكاديمي.
+              </p>
+
+              <ul class="list-unstyled mt-4" style="font-size: 1.1rem; padding: 0; color: #e2f1ed;">
+                <li class="mb-3">
+                  <i class="bi bi-check-circle-fill" style="color: #10b981; margin-left: 10px; font-size: 1.2rem;"></i>
+                 شرح مبسط للمواد القانونية والمقررات الدراسية.
+                </li>
+                <li class="mb-3">
+                  <i class="bi bi-check-circle-fill" style="color: #10b981; margin-left: 10px; font-size: 1.2rem;"></i>
+                 التدريب علي حل القضايا المختلفة في كل التخصصات.
+                </li>
+                <li class="mb-3">
+                  <i class="bi bi-check-circle-fill" style="color: #10b981; margin-left: 10px; font-size: 1.2rem;"></i>
+                 التدريب علي حل الاسئلة وفقا للنماذج المختلفة للامتحانات ( mcq +مقالي ).
+                </li>
+              </ul>
+            </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </section><!-- /Hero Section -->
+
+
+
+
+    <!-- Teachers Section -->
+    <section id="teachers" dir="rtl" class="services section light-background">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <span class="description-title">نخبة المعلمين</span>
+        <h2>مدرسين المنصة</h2>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+
+        <!-- كلاسات السلايدر (horizontal scroll) -->
+        <div class="d-flex flex-row flex-nowrap overflow-auto py-3 custom-slider" style="gap: 20px;">
+
+          <div class="card text-center" style="width: 18rem; flex: 0 0 auto; border-top: 4px solid #10b981;">
+            <div class="card-body">
+              <div class="mb-3">
+                <img src="assets/img/illustration/WhatsApp Image 2026-09-04 at 11.24.46 PM.jpeg"
+                  class="rounded-circle shadow-sm"
+                  style="width: 90px; height: 90px; object-fit: cover; border: 3px solid #10b981;"
+                  alt="أ.د/ جمال عبد الناصر">
+              </div>
+              <h5 class="card-title fw-bold">أ.د/ جمال عبد الناصر</h5>
+              <p class="text-muted small mb-2">أستاذ القانون</p>
+              <p class="card-text text-secondary" style="font-size: 0.9rem;">
+                - ليسانس حقوق<br>
+                - ماجستير القانون العام والعلوم الجنائية<br>
+                - دكتوراة في القانون<br>
+                - خبرة ١٧ سنة في مجال تدريس المواد القانونية <br>
+
+                - المحامي بالنقض
+              </p>
+            </div>
+          </div>
+
+          <!-- المدرس الثاني -->
+          <div class="card text-center" style="width: 18rem; flex: 0 0 auto; border-top: 4px solid #10b981;">
+            <div class="card-body">
+              <div class="mb-3">
+                <img src="assets/img/illustration/Screenshot 2026-09-04 233457.png" class="rounded-circle shadow-sm"
+                  style="width: 90px; height: 90px; object-fit: cover; border: 3px solid #10b981;" alt="أ.د /احمد طه">
+              </div>
+              <h5 class="card-title fw-bold">أ.د /احمد طه</h5>
+              <p class="text-muted small mb-2">أستاذ القانون</p>
+              <p class="card-text text-secondary" style="font-size: 0.9rem;">
+                - ليسانس حقوق<br>
+                - ماجستير القانون الخاص والعلوم الادارية<br>
+                - باحث دكتوراة في القانون الخاص<br>
+                - خبرة ١٢ سنة في مجال تدريس المواد القانونية <br>
+                - محامي بدرجة استئناف
+              </p>
+            </div>
+          </div>
+
+          <!-- المدرس الثالث -->
+          <div class="card text-center" style="width: 18rem; flex: 0 0 auto; border-top: 4px solid #10b981;">
+            <div class="card-body">
+              <div class="mb-3">
+                <img src="assets/img/illustration/Screenshot 2026-09-04 233634.png" class="rounded-circle shadow-sm"
+                  style="width: 90px; height: 90px; object-fit: cover; border: 3px solid #10b981;" alt="د/ عبد الرحمن">
+              </div>
+              <h5 class="card-title fw-bold">د/ عبد الرحمن</h5>
+              <p class="text-muted small mb-2">أستاذ الشريعة الإسلامية</p>
+              <p class="card-text text-secondary" style="font-size: 0.9rem;">
+                - كلية أصول الدين جامعة الأزهر<br>
+                - متخصص في مواد الشريعة الإسلامية<br>
+                - خبرة أكثر من ٦ سنوات
+              </p>
+            </div>
+          </div>
+
+          <!-- المدرس الرابع -->
+          <div class="card text-center" style="width: 18rem; flex: 0 0 auto; border-top: 4px solid #10b981;">
+            <div class="card-body">
+              <div class="mb-3">
+                <img src="assets/img/illustration/Screenshot 2026-09-04 233641.png" class="rounded-circle shadow-sm"
+                  style="width: 90px; height: 90px; object-fit: cover; border: 3px solid #10b981;" alt="د/ كريم صبحي">
+              </div>
+              <h5 class="card-title fw-bold">د/ كريم صبحي</h5>
+              <p class="text-muted small mb-2">أستاذ القانون</p>
+              <p class="card-text text-secondary" style="font-size: 0.9rem;">
+                - ليسانس حقوق<br>
+                - ماجستير قانون<br>
+                - محامي بدرجة استئناف<br>
+                - خبرة ١٣ سنه في مجال تدريس المواد القانونية
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- /Teachers Section -->
+
+    <!-- كود CSS المحدث لتناسب الهوية الخضراء -->
+    <style>
+      .custom-slider {
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 15px;
+      }
+
+      .custom-slider .card {
+        scroll-snap-align: center;
+        border-radius: 12px;
+        transition: transform 0.3s ease;
+      }
+
+      .custom-slider .card:hover {
+        transform: translateY(-5px);
+      }
+
+      /* شريط التمرير بلون أخضر زمردي متناسق */
+      .custom-slider::-webkit-scrollbar {
+        height: 8px;
+      }
+
+      .custom-slider::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
+
+      .custom-slider::-webkit-scrollbar-thumb {
+        background: #10b981;
+        border-radius: 10px;
+      }
+
+      .custom-slider::-webkit-scrollbar-thumb:hover {
+        background: #059669;
+      }
+    </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Features Section -->
+    <section id="features" class="features section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up" dir="rtl">
+        <span class="description-title">مميزات المنصة</span>
+        <h2>لماذا تختار أكاديمية المستشار؟</h2>
+        <p>المنصة التعليمية الأولى لطلاب كلية الحقوق، نوفر لك شروحات قانونية مبسطة وتدريباً عملياً يضمن لك التفوق
+          والامتياز.</p>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="features-overview">
+
+          <div class="features-card-wrapper" data-aos="fade-left" data-aos-delay="300">
+            <div class="features-row">
+              <div class="feature-card feature-primary" data-aos="zoom-in" data-aos-delay="200">
+                <div class="feature-icon">
+                  <i class="bi bi-journal-bookmark-fill"></i>
+                </div>
+                <div class="feature-details" dir="rtl">
+                  <h3>شرح قانوني شامل ومبسط</h3>
+                  <p>- نوفر لك محاضرات شرح شامله لجميع المواد الدراسية بكلية الحقوق مع نخبة من اساتذة القانون </p>
+                  <div class="feature-status active">
+                    <span class="status-indicator"></span>
+                    <span class="status-text">محتوى محدث</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="feature-card" data-aos="zoom-in" data-aos-delay="300">
+                <div class="feature-icon">
+                  <i class="bi bi-display"></i>
+                </div>
+                <div class="feature-details" dir="rtl">
+                  <h3>مرونة في المذاكرة والمراجعة</h3>
+                  <p>جميع المحاضرات مسجلة ومتاحة بجودة عالية لتتمكن من مشاهدتها ومراجعتها في أي وقت ومن أي جهاز لتناسب
+                    وقتك.</p>
+                  <div class="feature-status active">
+                    <span class="status-indicator"></span>
+                    <span class="status-text">متاح 24/7</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="features-row">
+              <div class="feature-card" data-aos="zoom-in" data-aos-delay="400">
+                <div class="feature-icon">
+                  <i class="bi bi-file-earmark-text"></i>
+                </div>
+                <div class="feature-details" dir="rtl">
+                  <h3>تطبيقات عملية وبنك أسئلة</h3>
+                  <p>تتدريب مستمر علي حل ( القضايا - اسئلة للبابل شيت - المقالي ) وفقا لنماذج امتحانات الكلية</p>
+                  <div class="feature-status active">
+                    <span class="status-indicator"></span>
+                    <span class="status-text">تدريب مستمر</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="feature-card" data-aos="zoom-in" data-aos-delay="500">
+                <div class="feature-icon">
+                  <i class="bi bi-person-lines-fill"></i>
+                </div>
+                <div class="feature-details" dir="rtl">
+                  <h3>متابعة مستمرة ودعم أكاديمي</h3>
+                  <p>تواصل مباشر مع المحاضرين للإجابة على استفساراتك القانونية، ومتابعة دورية لمستواك الدراسي طوال
+                    الترم.</p>
+                  <div class="feature-status active">
+                    <span class="status-indicator"></span>
+                    <span class="status-text">دعم متواصل</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /Features Section -->
+
+
+
+
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq section">
+
+      <div class="container section-title" data-aos="fade-up" dir="rtl">
+        <span class="description-title">أسئلة شائعة</span>
+        <h2>أسئلة يتكرر طرحها</h2>
+        <p>جمعنا لك أهم الإجابات على استفساراتك حول المحاضرات القانونية وطرق الاشتراك في أكاديمية المستشار.</p>
+      </div>
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row align-items-start gy-4">
+
+          <div class="col-lg-7">
+            <div class="faq-tabs">
+              <ul class="nav nav-pills mb-4" id="faqTabs-faq" role="tablist" data-aos="fade-up" data-aos-delay="100">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="general-tab-faq" data-bs-toggle="pill"
+                    data-bs-target="#general-faq-faq" type="button" role="tab" aria-controls="general-faq-faq"
+                    aria-selected="true" dir="rtl">استفسارات عامة</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="account-tab-faq" data-bs-toggle="pill" data-bs-target="#account-faq-faq"
+                    type="button" role="tab" aria-controls="account-faq-faq" aria-selected="false" dir="rtl">المواد
+                    والمحاضرات</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="payment-tab-faq" data-bs-toggle="pill" data-bs-target="#payment-faq-faq"
+                    type="button" role="tab" aria-controls="payment-faq-faq" aria-selected="false" dir="rtl">الدفع
+                    والاشتراك</button>
+                </li>
+              </ul>
+
+              <div class="tab-content" id="faqTabsContent-faq">
+                <!-- استفسارات عامة -->
+                <div class="tab-pane fade show active" id="general-faq-faq" role="tabpanel"
+                  aria-labelledby="general-tab-faq">
+                  <div class="accordion" id="generalAccordion-faq" dir="rtl">
+                    <div class="faq-item" data-aos="fade-up" data-aos-delay="150">
+                      <h3>كيف أنشئ حساباً جديداً؟</h3>
+                      <div class="faq-content">
+                        <p>من خلال صفحة التسجيل، أدخل بياناتك الأساسية وفرقتك الدراسية لإنشاء حسابك والبدء فوراً.</p>
+                      </div>
+                      <i class="bi bi-chevron-down faq-toggle"></i>
+                    </div>
+
+                    <div class="faq-item" data-aos="fade-up" data-aos-delay="200">
+                      <h3>ما هي الأجهزة المدعومة لتشغيل المنصة؟</h3>
+                      <div class="faq-content">
+                        <p>تعمل المنصة بسلاسة على جميع الأجهزة (موبايل، لابتوب، كمبيوتر) من خلال أي متصفح إنترنت.</p>
+                      </div>
+                      <i class="bi bi-chevron-down faq-toggle"></i>
+                    </div>
+
+                    <div class="faq-item" data-aos="fade-up" data-aos-delay="250">
+                      <h3>هل يوجد تدريب على أسئلة الامتحانات؟</h3>
+                      <div class="faq-content">
+                        <p>نعم، نوفر تدريبات مستمرة على حل القضايا القانونية وأسئلة (البابل شيت) لتأهيلك للامتحان.</p>
+                      </div>
+                      <i class="bi bi-chevron-down faq-toggle"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- المواد والمحاضرات -->
+                <div class="tab-pane fade" id="account-faq-faq" role="tabpanel" aria-labelledby="account-tab-faq">
+                  <div class="accordion" id="accountAccordion-faq" dir="rtl">
+                    <div class="faq-item" data-aos="fade-up" data-aos-delay="150">
+                      <h3>ما هي الفرق الدراسية المتاحة على المنصة؟</h3>
+                      <div class="faq-content">
+                        <p>المنصة تقدم شروحات متكاملة لطلاب كلية الحقوق بمختلف الفرق الدراسية.</p>
+                      </div>
+                      <i class="bi bi-chevron-down faq-toggle"></i>
+                    </div>
+
+                    <div class="faq-item" data-aos="fade-up" data-aos-delay="200">
+                      <h3>هل يمكنني إعادة مشاهدة المحاضرة؟</h3>
+                      <div class="faq-content">
+                        <p>نعم، جميع المحاضرات مسجلة ويمكنك مشاهدتها ومراجعتها في أي وقت طوال فترة اشتراكك.</p>
+                      </div>
+                      <i class="bi bi-chevron-down faq-toggle"></i>
+                    </div>
+
+                    <div class="faq-item" data-aos="fade-up" data-aos-delay="250">
+                      <h3>هل أستطيع التواصل مع المحاضرين؟</h3>
+                      <div class="faq-content">
+                        <p>نعم، المنصة توفر قنوات تواصل لطرح أسئلتك القانونية والحصول على إجابات وافية.</p>
+                      </div>
+                      <i class="bi bi-chevron-down faq-toggle"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- الدفع والاشتراك -->
+                <div class="tab-pane fade" id="payment-faq-faq" role="tabpanel" aria-labelledby="payment-tab-faq">
+                  <div class="accordion" id="paymentAccordion-faq" dir="rtl">
+                    <div class="faq-item" data-aos="fade-up" data-aos-delay="150">
+                      <h3>ما هي طرق الدفع المتاحة؟</h3>
+                      <div class="faq-content">
+                        <p>نوفر طرق دفع إلكترونية متعددة تناسب الجميع لتسهيل عملية الاشتراك.</p>
+                      </div>
+                      <i class="bi bi-chevron-down faq-toggle"></i>
+                    </div>
+
+                    <div class="faq-item" data-aos="fade-up" data-aos-delay="200">
+                      <h3>متى يتم تفعيل الكورس بعد الدفع؟</h3>
+                      <div class="faq-content">
+                        <p>يتم التفعيل فوراً أو بمجرد مراجعة إيصال الدفع من قبل فريق الدعم الفني.</p>
+                      </div>
+                      <i class="bi bi-chevron-down faq-toggle"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- قسم الصورة والدعم -->
+          <div class="col-lg-5" data-aos="fade-up" data-aos-delay="200">
+            <div class="faq-sidebar">
+
+              <div class="contact-box" dir="rtl">
+                <h3><i class="bi bi-headset"></i> هل تحتاج إلى مساعدة؟</h3>
+                <p>فريق الدعم الفني جاهز لمساعدتك في أي سؤال يخص المحاضرات أو الاشتراك. تواصل معنا الآن!</p>
+                <a href="https://wa.me/201273665287" class="btn-contact" target="_blank">تواصل مع الدعم</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!--  -->
+
+    <!-- Contact Section -->
+    <section id="contact" dir="rtl" class="contact section">
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <span class="description-title">تواصل معنا</span>
+        <h2>تواصل معنا</h2>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+        <div class="contact-wrapper">
+          <div class="contact-info-panel">
+            <div class="contact-info-header">
+              <h3>معلومات التواصل</h3>
+              <p>
+                يسعدنا تواصلك معنا في أي وقت. نحن هنا للإجابة على استفساراتك
+                وتقديم الدعم الكامل قبل وأثناء وبعد الاشتراك.
+              </p>
+            </div>
+
+            <div class="contact-info-cards">
+              <div class="info-card">
+                <div class="icon-container">
+                  <i class="bi bi-pin-map-fill"></i>
+                </div>
+                <div class="card-content">
+                  <h4>موقعنا</h4>
+                  <p>برج سما ١ . امام كلية الحقوق جامعة بنها </p>
+                </div>
+              </div>
+
+
+              <div class="info-card">
+                <div class="icon-container">
+                  <i class="bi bi-telephone-fill"></i>
+                </div>
+                <div class="card-content">
+                  <h4>اتصل بنا</h4>
+                  <p>01273665287</p>
+                </div>
+              </div>
+
+              <div class="info-card">
+                <div class="icon-container">
+                  <i class="bi bi-clock-history"></i>
+                </div>
+                <div class="card-content">
+                  <h4>مواعيد العمل</h4>
+                  <p>من السبت إلى الخميس</p>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+
+
+          <div class="form-container">
+            <h3>أرسل لنا رسالة</h3>
+            <p>
+              اترك رسالتك وسنقوم بالرد عليك في أقرب وقت ممكن.
+              هدفنا هو مساعدتك واتخاذ الخطوة التالية بثقة.
+            </p>
+
+            <form action="forms/contact.php" method="post" class="php-email-form">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="nameInput" name="name" placeholder="الاسم الكامل"
+                  required="">
+                <label for="nameInput">الاسم الكامل</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="emailInput" name="email" placeholder="البريد الإلكتروني"
+                  required="">
+                <label for="emailInput">البريد الإلكتروني</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="subjectInput" name="subject" placeholder="عنوان الرسالة"
+                  required="">
+                <label for="subjectInput">عنوان الرسالة</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <textarea class="form-control" id="messageInput" name="message" rows="5" placeholder="رسالتك"
+                  style="height: 150px" required=""></textarea>
+                <label for="messageInput">رسالتك</label>
+              </div>
+
+              <div class="my-3">
+                <div class="loading">جاري الإرسال...</div>
+                <div class="error-message"></div>
+                <div class="sent-message">تم إرسال رسالتك بنجاح، شكرًا لتواصلك معنا.</div>
+              </div>
+
+              <div class="d-grid">
+                <button type="submit" class="btn-submit">
+                  إرسال الرسالة ...<i class="bi bi-send-fill ms-2"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section><!-- /Contact Section -->
+
+  </main>
+
+  <footer id="footer" dir="rtl" class="footer">
+
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-5 col-md-12 footer-about">
+          <a href="index.html" class="logo d-flex align-items-center">
+            <span class="sitename">أكاديمية المستشار</span>
+          </a>
+          <p>
+            المنصة التعليمية الأولى المتخصصة لطلاب كلية الحقوق. نهدف إلى تقديم شروحات قانونية مبسطة وتدريب عملي يضمن
+            لطلابنا التفوق والامتياز في جميع المواد القانونية.
+          </p>
+
+        </div>
+
+
+
+        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+          <h4>تواصل معنا</h4>
+          <p>برج سما ١ . امام كلية الحقوق جامعة بنها</p>
+          <p class="mt-4"><strong>الدعم الفني:</strong> <span>01273665287</span></p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <p>© <span>جميع الحقوق محفوظة لـ</span> <strong class="px-1 sitename">أكاديمية المستشار</strong></p>
+      <div class="credits">
+        تصميم وتطوير: <a href="https://hassan6102.github.io/portfolio/"> Eng. Hassan Mohamed</a>
+      </div>
+    </div>
+
+  </footer>
+
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+
+  <!-- Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
