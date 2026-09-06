@@ -983,7 +983,7 @@ app.get('/api/auth/me', requireAuth, async (req, res) => {
 });
 
 app.use(express.static(frontendDir));
-app.get('/', (_req, res) => res.sendFile(path.join(frontendDir, 'login.html')));
+app.get('/', (_req, res) => res.sendFile(path.join(frontendDir, 'index.html')));
 app.get('/admin.html', (_req, res) => res.sendFile(path.join(frontendDir, 'admin', 'index.html')));
 app.get('/client.html', (_req, res) => res.sendFile(path.join(frontendDir, 'client', 'index.html')));
 app.get('/login-teacher.html', (_req, res) => res.sendFile(path.join(frontendDir, 'login.html')));
