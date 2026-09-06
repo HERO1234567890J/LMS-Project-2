@@ -94,7 +94,9 @@
   async function loadAvailableCourses() {
     const grid = $('availableCoursesGrid') || $('availableSubjectsGrid');
     try {
-      const { items } = await api('/api/student/courses');
+      const termSelect = $('termFilterSelect');
+      const termQuery = termSelect && termSelect.value ? `?term=${encodeURIComponent(termSelect.value)}` : '';
+      const { items } = await api('/api/student/courses' + termQuery);
       if (!items.length) {
         grid.innerHTML = '<p class="empty-state">لا توجد كورسات متاحة حاليًا. يمكنك الحصول على كود من المدرس.</p>';
         return;
@@ -841,6 +843,11 @@ window.buyLecture = function() {
     });
 
     // Catalog activation
+    const termFilterSelect = $('termFilterSelect');
+    if (termFilterSelect && !termFilterSelect.dataset.bound) {
+      termFilterSelect.dataset.bound = '1';
+      termFilterSelect.addEventListener('change', () => loadAvailableCourses());
+    }
     ($('availableCoursesGrid') || $('availableSubjectsGrid')).addEventListener('click', (e) => {
       const btn = e.target.closest('.activate-btn');
       if (btn) openActivationModal({ id: Number(btn.getAttribute('data-id')), name: btn.getAttribute('data-name') });
