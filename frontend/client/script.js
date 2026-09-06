@@ -102,7 +102,7 @@
         return;
       }
       grid.innerHTML = items.map((c) => `
-        <div class="course-card">
+        <div class="course-card" data-id="${c.id}" style="cursor:pointer;">
           ${c.badge === 'featured' ? '<div class="course-badge">مميز</div>' : ''}
           
           <!-- كود الصورة اللي ضفناه -->
@@ -113,8 +113,7 @@
           <h3>${esc(c.name_ar)}</h3>
           <p class="course-meta">${esc(c.stage_name_ar)} · ${esc(c.term_name_ar || '')} · د. ${esc(c.doctor_name || 'غير محدد')}</p>
           <p class="course-desc">${esc(c.description || '')}</p>
-          <div class="course-price">${c.price} جنيه <span class="course-lessons">${c.lessons_count} درس</span></div>
-          <button class="btn btn-primary activate-btn" data-id="${c.id}" data-name="${esc(c.name_ar)}">تفعيل بالكود</button>
+          <div class="course-price"><span class="course-lessons">${c.lessons_count} درس</span></div>
         </div>`).join('');
     } catch (err) {
       grid.innerHTML = `<p class="empty-state">${esc(err.message)}</p>`;
@@ -257,8 +256,8 @@
             <span style="color: #666; font-weight: bold; display: block;">🔒 ${esc(l.name_ar)}</span>
             <span class="lecture-meta" style="font-size: 0.85rem; color: #888;">${l.exams_count ? `${l.exams_count} امتحان` : 'لا يوجد امتحان'}</span>
           </div>
-          <button class="btn btn-sm btn-success" onclick="buyLecture(${l.id}, ${price}, '${esc(l.name_ar)}')" style="margin: 0; padding: 5px 15px;">
-            شراء بـ ${price} ج.م
+          <button class="btn btn-sm btn-success lecture-activate-btn" style="margin: 0; padding: 5px 15px;">
+            تفعيل بالكود
           </button>
         </div>`;
     }
@@ -281,6 +280,13 @@
       if (typeof enterLesson === 'function') {
         enterLesson(lessons[idx].id);
       }
+    });
+  });
+
+  container.querySelectorAll('.lecture-activate-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openActivationModal({ id: state.currentCourseId, name: state.currentCourseName });
     });
   });
 }
@@ -849,8 +855,8 @@ window.buyLecture = function() {
       termFilterSelect.addEventListener('change', () => loadAvailableCourses());
     }
     ($('availableCoursesGrid') || $('availableSubjectsGrid')).addEventListener('click', (e) => {
-      const btn = e.target.closest('.activate-btn');
-      if (btn) openActivationModal({ id: Number(btn.getAttribute('data-id')), name: btn.getAttribute('data-name') });
+      const card = e.target.closest('.course-card');
+      if (card) enterCourse(Number(card.getAttribute('data-id')));
     });
     $('closeModalBtn').addEventListener('click', closeActivationModal);
     $('confirmCodeBtn').addEventListener('click', confirmRedeem);

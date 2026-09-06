@@ -995,7 +995,7 @@ async function loadTeacherCourses() {
           <img src="${c.cover_url || 'https://via.placeholder.com/300x150?text=Course+Cover'}" style="width:100%; height:140px; object-fit:cover; border-radius:8px;">
         </div>
         <h3 style="margin-top: 10px;">${esc(c.name_ar)}</h3>
-        <p style="font-size:0.9rem; color:#555;">المرحلة: <strong>${stageLabel}</strong> | الترم: <strong>${c.term_name_ar || '-'}</strong> | السعر: <strong>${c.price} ج</strong></p>
+        <p style="font-size:0.9rem; color:#555;">المرحلة: <strong>${stageLabel}</strong> | الترم: <strong>${c.term_name_ar || '-'}</strong></p>
         <p style="font-size:0.9rem; color:#555;">المدرس: <strong>${esc(c.doctor_name || '-')}</strong></p>
 
         <div class="card-actions-row" style="margin-top:15px; display:flex; flex-wrap: wrap; gap:5px;">

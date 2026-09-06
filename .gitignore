@@ -54,3 +54,9 @@ pnpm-debug.log*
 backend/patch_upload_route.py
 *.bak.*
 backups/
+.env
+backend/.env
+backup_before_wipe_*.sql
+backend/backup_before_wipe_*.sql
+reset_data.sh
+backend/reset_data.sh

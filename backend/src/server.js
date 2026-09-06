@@ -250,6 +250,7 @@ app.post('/api/auth/register', async (req, res) => {
   try {
     const body = req.body;
     if (!body.name || !body.phone || !body.password) return res.status(400).json({ message: 'Name, phone, and password are required' });
+    if (!/^01\d{9}$/.test(String(body.phone).trim())) return res.status(400).json({ message: 'رقم الموبايل يجب أن يتكون من 11 رقم ويبدأ بـ 01' });
     if (body.password !== (body.password_confirmation || body.password)) return res.status(400).json({ message: 'Password confirmation does not match' });
     if (String(body.password).length < 8) return res.status(400).json({ message: 'كلمة المرور يجب ألا تقل عن 8 أحرف' });
     const __nameParts = String(body.name || '').trim().split(/\s+/).filter(Boolean);
