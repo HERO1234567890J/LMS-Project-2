@@ -254,10 +254,11 @@ app.post('/api/auth/register', async (req, res) => {
          RETURNING *`,
         [body.name, body.phone, body.email || null, hash],
       );
+      const generatedStudentNumber = String(created.rows[0].id).padStart(6, '0');
       await client.query(
-        `INSERT INTO students (user_id, level_id, guardian_name, guardian_phone, governorate, birth_date)
-         VALUES ($1,$2,$3,$4,$5,NULLIF($6,'')::date)`,
-        [created.rows[0].id, level.id, body.parent_name || body.guardian_name || null, body.parent_phone || body.guardian_phone || null, body.governorate || null, body.birthdate || body.birth_date || null],
+        `INSERT INTO students (user_id, level_id, student_number, guardian_name, guardian_phone, governorate, birth_date)
+         VALUES ($1,$2,$3,$4,$5,$6,NULLIF($7,'')::date)`,
+        [created.rows[0].id, level.id, generatedStudentNumber, body.parent_name || body.guardian_name || null, body.parent_phone || body.guardian_phone || null, body.governorate || null, body.birthdate || body.birth_date || null],
       );
       return { ...created.rows[0], level_code: level.code, level_id: level.id };
     });
