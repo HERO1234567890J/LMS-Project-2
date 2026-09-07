@@ -245,7 +245,7 @@
     return;
   }
   
-  container.innerHTML = lessons.map((l) => {
+  container.innerHTML = lessons.map((l, idx) => {
     // حالة الدرس المقفول (يحتاج إلى شراء)
     if (!l.open) {
       // نفترض أن السعر يأتي من الباك إند l.price، وإذا لم يوجد نضع 50 كافتراضي للتجربة
@@ -264,19 +264,31 @@
     
     // حالة الدرس المفتوح (تم شراؤه مسبقاً)
     return `
-      <div class="lecture-card unlocked" style="cursor: pointer;">
-        <div class="lecture-header" style="display: flex; justify-content: space-between;">
+      <div class="lecture-card unlocked">
+        <div class="lecture-header" style="display: flex; justify-content: space-between; cursor: pointer;">
           <span>${l.passed ? '✅' : '🔓'} ${esc(l.name_ar)}</span>
           <span class="lecture-open-hint" style="background: rgba(16, 185, 129, 0.1); color: var(--primary); padding: 3px 10px; border-radius: 6px; font-weight: bold;">
             ${l.passed ? 'تم الاجتياز' : 'دخول للمشاهدة ➔'}
           </span>
         </div>
         <div class="lecture-meta">${l.exams_count ? `${l.exams_count} امتحان` : 'لا يوجد امتحان'}</div>
+        <button class="btn lecture-materials-btn" data-idx="${idx}" style="margin-top:10px; width:100%; background: var(--warning); color:#fff; border:none; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">
+          عرض المواد
+        </button>
       </div>`;
   }).join('');
   
-  container.querySelectorAll('.lecture-card.unlocked').forEach((card, idx) => {
-    card.addEventListener('click', () => {
+  container.querySelectorAll('.lecture-header').forEach((header, idx) => {
+    header.addEventListener('click', () => {
+      if (typeof enterLesson === 'function') {
+        enterLesson(lessons[idx].id);
+      }
+    });
+  });
+  container.querySelectorAll('.lecture-materials-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const idx = Number(btn.getAttribute('data-idx'));
       if (typeof enterLesson === 'function') {
         enterLesson(lessons[idx].id);
       }
