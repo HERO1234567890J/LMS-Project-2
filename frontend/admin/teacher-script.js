@@ -1312,10 +1312,26 @@ async function loadPlatformTotalRevenue() {
   } catch { /* leave the placeholder if this fails; the filtered card below still loads independently */ }
 }
 
+async function populateSalesDoctorFilter() {
+  const doctorSelect = document.getElementById('salesDoctorFilter');
+  if (!doctorSelect) return;
+  try {
+    const res = await api('/courses');
+    const items = res.items || [];
+    const currentValue = doctorSelect.value;
+    const doctors = [...new Set(items.map((c) => c.doctor_name).filter(Boolean))].sort();
+    doctorSelect.innerHTML = '<option value="">-- كل المدرسين --</option>' +
+      doctors.map((d) => `<option value="${esc(d)}">${esc(d)}</option>`).join('');
+    if (doctors.includes(currentValue)) doctorSelect.value = currentValue;
+  } catch (err) {
+    console.error('فشل تحميل قائمة المدرسين:', err.message);
+  }
+}
 function initSales() {
+  populateSalesDoctorFilter();
   ['salesDoctorFilter', 'salesDateFrom', 'salesDateTo'].forEach((id) => {
     const el = document.getElementById(id);
-    if (el) el.addEventListener(id === 'salesDoctorFilter' ? 'input' : 'change', loadSalesData);
+    if (el) el.addEventListener('change', loadSalesData);
   });
 
   // زرار تسوية الحساب مُعطّل عمدًا: لا يوجد نظام مدفوعات/رصيد مستقل للمدرسين في الباك إند حاليًا.
