@@ -850,7 +850,7 @@ student.get('/subscriptions', requireStudent, async (req, res) => {
 student.get('/courses/:id', requireStudent, async (req, res) => {
   try {
     const sub = await query('SELECT 1 FROM subscriptions WHERE student_id = $1 AND subject_id = $2 AND status = $3', [req.session.userId, req.params.id, 'active']);
-    if (!sub.rows.length) return res.status(403).json({ message: 'Activate this subject first' });
+    const isSubscribed = sub.rows.length > 0;
     const course = (await subjectRows('WHERE s.id = $1', [req.params.id]))[0];
     const lectures = await query(
       `SELECT le.*, le.subject_id AS course_id, le.title AS name_ar,
@@ -860,8 +860,8 @@ student.get('/courses/:id', requireStudent, async (req, res) => {
       [req.session.userId, req.params.id],
     );
     const lessons = [];
-    for (const row of lectures.rows) lessons.push({ ...row, open: await lectureOpen(req.session.userId, row) });
-    res.json({ course, lessons, progress: await progressFor(req.session.userId, req.params.id) });
+    for (const row of lectures.rows) lessons.push({ ...row, open: isSubscribed ? await lectureOpen(req.session.userId, row) : false });
+    res.json({ course, lessons, progress: isSubscribed ? await progressFor(req.session.userId, req.params.id) : { total_lessons: lessons.length, passed_lessons: 0, completed_percent: 0 } });
   } catch (err) { sendError(res, err); }
 });
 

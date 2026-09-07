@@ -111,10 +111,19 @@
           </div>
 
           <h3>${esc(c.name_ar)}</h3>
-          <p class="course-meta">${esc(c.stage_name_ar)} · ${esc(c.term_name_ar || '')} · د. ${esc(c.doctor_name || 'غير محدد')}</p>
+          <p class="course-meta">${esc(c.stage_name_ar)} · ${esc(c.term_name_ar || '')} · ${esc((c.doctor_name || 'غير محدد').replace(/^د\.?\s*/, ''))}</p>
           <p class="course-desc">${esc(c.description || '')}</p>
           <div class="course-price"><span class="course-lessons">${c.lessons_count} درس</span></div>
+          <button class="btn enter-available-course-btn" data-id="${c.id}" style="margin-top:10px; width:100%; background: var(--primary); color:#fff; border:none; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">
+            دخول الكورس
+          </button>
         </div>`).join('');
+      grid.querySelectorAll('.enter-available-course-btn').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          enterCourse(Number(btn.getAttribute('data-id')));
+        });
+      });
     } catch (err) {
       grid.innerHTML = `<p class="empty-state">${esc(err.message)}</p>`;
     }
@@ -221,6 +230,7 @@
   // ---------- Course detail / lectures ----------
   async function enterCourse(courseId) {
     state.currentCourseId = courseId;
+    showSection('enrolled');
     showLevel('level-lectures');
     $('lecturesContainer').innerHTML = '<p class="empty-state">جاري تحميل الدروس...</p>';
     try {
@@ -228,7 +238,7 @@
       state.currentCourseName = data.course.name_ar;
       $('heroCourseTitle').textContent = data.course.name_ar;
       $('heroCourseSubtitle').textContent = data.course.description || '';
-      $('heroBreadcrumb').textContent = `${data.course.stage_name_ar} · ${data.course.term_name_ar || ''} · د. ${data.course.doctor_name || 'غير محدد'}`;
+      $('heroBreadcrumb').textContent = `${data.course.stage_name_ar} · ${data.course.term_name_ar || ''} · ${(data.course.doctor_name || 'غير محدد').replace(/^د\.?\s*/, '')}`;
       $('heroLessonsCount').textContent = data.progress.total_lessons;
       $('heroPassedCount').textContent = data.progress.passed_lessons;
       $('heroPercent').textContent = data.progress.completed_percent + '%';
@@ -254,6 +264,7 @@
         <div class="lecture-card locked" style="display: flex; justify-content: space-between; align-items: center; padding: 15px;">
           <div>
             <span style="color: #666; font-weight: bold; display: block;">🔒 ${esc(l.name_ar)}</span>
+            ${l.description ? `<span class="lecture-desc" style="font-size: 0.85rem; color: #999; display:block; margin-top:4px;">${esc(l.description)}</span>` : ''}
             <span class="lecture-meta" style="font-size: 0.85rem; color: #888;">${l.exams_count ? `${l.exams_count} امتحان` : 'لا يوجد امتحان'}</span>
           </div>
           <button class="btn btn-sm btn-success lecture-activate-btn" style="margin: 0; padding: 5px 15px;">
@@ -271,8 +282,9 @@
             ${l.passed ? 'تم الاجتياز' : 'دخول للمشاهدة ➔'}
           </span>
         </div>
+        ${l.description ? `<div class="lecture-desc" style="font-size: 0.85rem; color: #999; margin: 6px 0;">${esc(l.description)}</div>` : ''}
         <div class="lecture-meta">${l.exams_count ? `${l.exams_count} امتحان` : 'لا يوجد امتحان'}</div>
-        <button class="btn lecture-materials-btn" data-idx="${idx}" style="margin-top:10px; width:100%; background: var(--warning); color:#fff; border:none; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">
+        <button class="btn lecture-materials-btn" data-idx="${idx}" style="margin-top:10px; width:100%; background: var(--primary); color:#fff; border:none; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">
           عرض المواد
         </button>
       </div>`;
@@ -847,7 +859,7 @@ window.buyLecture = function() {
       // وضع الاسم وتحته المرحلة بتصميم شيك في القائمة الجانبية
       $('sessionUserName').innerHTML = `
         ${studentName}
-        <div style="font-size: 0.85rem; color: #D4AF37; margin-top: 5px; font-weight: 600;">
+        <div style="font-size: 0.85rem; color: #10b981; margin-top: 5px; font-weight: 600;">
           📚 ${studentStage}
         </div>
       `;
