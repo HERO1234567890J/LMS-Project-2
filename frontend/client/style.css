@@ -413,7 +413,7 @@ body {
 }
 .locked-warning-box {
   padding: 10px 1.2rem; background: #fff5f5;
-  border-top: 1px solid #fe202020; color: #c53030;
+  border-top: 1px solid #fed7d7; color: #c53030;
   font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 8px;
 }
 
